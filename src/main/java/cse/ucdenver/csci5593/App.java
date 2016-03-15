@@ -10,6 +10,10 @@ public class App
     {
         System.out.println( "Hello World!" );
 
+        // TODO: Load code file
+        // TODO: Parse code file and generate sim
+        // TODO: Run simulation
+        // TODO: Print results
 
     }
 }
