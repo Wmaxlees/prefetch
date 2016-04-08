@@ -48,16 +48,11 @@ public class Parser {
                 // Split the line at the spaces
                 String[] splitLine = this.instSet.stripComments(line).split(" ");
 
-                // Create new instruction
-                Instruction inst = this.instSet.generateInstruction(splitLine);
+                // Create new instruction list
+                List<Instruction> instructions = this.instSet.generateInstructions(splitLine);
 
-                // Take care of operands
-                for (int i = 1; i < splitLine.length; ++i) {
-                    this.addOperand(splitLine[i], inst);
-                }
-
-                // Add instruction to set
-                result.add(inst);
+                // Add instructions to set
+                result.addAll(instructions);
             }
         } catch (FileNotFoundException e) {
             System.err.print("Parse file not found: " + filename);
@@ -66,30 +61,5 @@ public class Parser {
         }
 
         return null;
-    }
-
-    private void addOperand(String str, Instruction inst) {
-        int addr;
-
-        // Check if it's a register
-        if ((addr = this.instSet.isRegister(str)) != 0) {
-            inst.addOperand(addr);
-            return;
-        }
-
-        // Check whether it's a constant
-        else if (this.instSet.isConstant(str)) {
-            inst.addOperand(0);
-            return;
-        }
-
-        // Check whether it's a memory location
-        else {
-            if (map.containsKey(str)) {
-                inst.addOperand(map.get(str));
-            } else {
-                inst.addOperand(next++);
-            }
-        }
     }
 }
