@@ -14,4 +14,6 @@ public interface Core {
      * @param inst The list of instructions to execute
      */
     void instructions(List<Instruction> inst);
+
+
 }

@@ -29,7 +29,7 @@ public class App
 
                 for (Instruction i : inst) {
                     // Increment the clock
-                    clock += i.CPI();
+                    clock += i.CPI(mm);
 
                     // TODO: Handle memory stuff
                 }

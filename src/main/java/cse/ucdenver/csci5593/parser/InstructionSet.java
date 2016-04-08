@@ -1,30 +1,23 @@
 package cse.ucdenver.csci5593.parser;
 
 import cse.ucdenver.csci5593.instruction.Instruction;
+import cse.ucdenver.csci5593.instruction.Operand;
+
+import java.util.List;
 
 /**
  * Created by willi on 3/14/2016.
  */
 public interface InstructionSet {
     /**
-     * Generates the correct instruction instance from
-     * the split string
+     * Generates the correct instruction instances from
+     * the passed token
      *
-     * @param splitString The split string
+     * @param token The token to determine the instruction
      * @return The correct instance of Instruction interface or
      *         null if the instruction isn't recognized
      */
-    Instruction generateInstruction(String[] splitString);
-
-    /**
-     * Returns the register index or 0 if the string doesn't
-     * represent a register
-     *
-     * @param str The string to check
-     * @return The index of the register or 0 if the string doesn't
-     *         represent a register
-     */
-    int isRegister(String str);
+    List<Instruction> generateInstructions(String[] tokens);
 
     /**
      * @return The maximum index that represents a register for the given
@@ -40,12 +33,4 @@ public interface InstructionSet {
      */
     String stripComments(String line);
 
-    /**
-     * Returns true if the token represents a constant in the given
-     * instruction set
-     *
-     * @param token The token to check against
-     * @return True if the token is a constant
-     */
-    boolean isConstant(String token);
 }
