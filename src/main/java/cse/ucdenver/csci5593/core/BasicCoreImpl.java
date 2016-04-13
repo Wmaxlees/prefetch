@@ -1,40 +1,51 @@
-public class BasicCoreImpl 
+package cse.ucdenver.csci5593.core;
+
+import cse.ucdenver.csci5593.instruction.Instruction;
+import cse.ucdenver.csci5593.memory.MemoryManager;
+
+import java.util.Queue;
+
+public class BasicCoreImpl implements Core
 {
 // Declare the variable that we need
-    MemoryManager MM;
+    MemoryManager mm;
 	int currentCycle;
-	int crrentInstCycle;
+	int currentInstCycle;
 	Instruction currentInst;
-	List<instruction> inst;
+	Queue<Instruction> inst;
 	
 	// set-up the instruction
-	public void SetInstruction(List<inst> List)
+	public void setInstruction(Queue<Instruction> list)
 	{
 		this.inst = list;
 	}
 	
 	// Update the current cycle by adding one each time
 	// Updating the current Instruction cycle by subtracting one each time and check it if it is zero or not 
-	public void Update() 
+	public boolean update()
 	{
-		CurrentCycle += 1;
-		CurrentInstCycle -=1;
-		if (CurrentInstCycle = 0)
+		++this.currentCycle;
+		--this.currentInstCycle;
+		if (this.currentInstCycle == 0)
 		{
-			CI.execute(MM);
-			CI = inst.pop();
+			this.currentInst.execute(this.mm);
+			this.currentInst = inst.poll();
+            if (this.currentInst == null) {
+                return false;
+            }
 		}
+        return true;
 	}
 		
 	// Returning the Run Time for current Cycle
-	public int GetRunTime()
+	public int getRuntime()
 	{
-		return CurrentCycle;
+		return this.currentCycle;
 	}
 	
 	// Setting the Memory Manager
-	public void SetMemoryManager(MemoryManager MM)
+	public void setMemoryManager(MemoryManager mm)
 	{
-		this.MM = MM;
+		this.mm = mm;
 	}
 }
