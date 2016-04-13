@@ -1,40 +1,53 @@
 package cse.ucdenver.csci5593.memory;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
+public class FIFOCache implements MemoryModule{
+	FIFOCache(int size, int time)
+	{
+		this.max=size;
+		this.accesstime=time;
+	}
+	
+	int current=0;
+	int max=20;
+	int accesstime;
+	ArrayList<Integer> cache = new ArrayList<Integer>();
+	
+	public boolean hasValue(int i) {
+		for(int j:cache)
+		{
+			if(j==i)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 
-/**
- * Created by max on 3/14/16.
- */
-public interface MemoryModule {
-    /**
-     * Returns true if the memory module holds the value
-     * of the given index
-     *
-     * @param memoryLocation The index of the memory needed
-     * @return true if the module holds the value, false otherwise
-     */
-    boolean hasValue(int memoryLocation);
+	public void setValue(int i) {
+		
+		cache.set(current, i);
+		
+		current = (current + 1)% max;
+	}
 
-    /**
-     * Sets the module to hold the value of the given
-     * memory location
-     *
-     * @param memoryLocation
-     */
-    void setValue(int memoryLocation);
+	public void update() {
+		
+	}
 
-    /**
-     * Must be called every tick. Used for when caches update
-     * flags based on ticks, etc.
-     */
-    void update();
+	public int checkTime() {
+		
+		return 0;
+	}
 
-    /**
-     * @return The time it takes to check whether the module contains
-     * memory
-     */
-    int checkTime();
+	public int accessTime() {
+		
+		return accesstime;
+	}
+	
+	
 
-    /**
-     * @return The access time of the module
-     */
-    int accessTime();
 }
+
+
