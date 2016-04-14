@@ -2,6 +2,7 @@ package cse.ucdenver.csci5593.memory;
 
 import cse.ucdenver.csci5593.memory.exceptions.AddressNotFoundException;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,6 +16,11 @@ public class MemoryManager {
      */
     private List<MemoryModule> modules;
     private HashMap<Integer, Integer> values;
+
+    public MemoryManager() {
+        this.modules = new ArrayList<>();
+        this.values = new HashMap<>();
+    }
 
     /**
      * Add a module to the memory manager

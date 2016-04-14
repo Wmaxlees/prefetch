@@ -3,9 +3,7 @@ package cse.ucdenver.csci5593.parser;
 import cse.ucdenver.csci5593.instruction.Instruction;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by willi on 3/14/2016.
@@ -21,8 +19,8 @@ public class Parser {
     // 1-8 is reserved for general purpose registers
     private int next;
 
-    public Parser() {
-        this.instSet = new X86InstructionSet();
+    public Parser(InstructionSet instructionSet) {
+        this.instSet = instructionSet;
         this.map = new HashMap<>();
         this.next = this.instSet.maxRegisterIndex();
     }
@@ -36,9 +34,9 @@ public class Parser {
      *         or null if the file isn't properly formatted
      * @see cse.ucdenver.csci5593.core.Core
      */
-    public List<Instruction> parseFile(String filename) {
+    public Queue<Instruction> parseFile(String filename) {
         // Result
-        List<Instruction> result = new ArrayList<>();
+        Queue<Instruction> result = new ArrayDeque<>();
 
         // Loop through the file
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
