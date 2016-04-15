@@ -14,12 +14,53 @@ public class MemoryManager {
      * Holds the memory modules (attempts to access
      * lower indices first)
      */
+    private RegisterMemoryModule registers;
     private List<MemoryModule> modules;
     private HashMap<Integer, Integer> values;
 
+    /**
+     * Create a new instance of the MemoryManager
+     */
     public MemoryManager() {
         this.modules = new ArrayList<>();
         this.values = new HashMap<>();
+    }
+
+    /**
+     * Set the register memory module for the manager
+     *
+     * @param rmm The RegisterMemoryModule to use as registers
+     */
+    public void setRegisterMemoryModule(RegisterMemoryModule rmm) {
+        this.registers = rmm;
+    }
+
+    /**
+     * Get the address of a named register
+     *
+     * @param name The name of the register to get the address of
+     * @return The address of the named register
+     */
+    public int getRegisterAddress(String name) {
+        return this.registers.getRegisterAddress(name);
+    }
+
+    /**
+     * Set the register flag
+     *
+     * @param name The name of the flag to set
+     */
+    public void setFlag(RegisterMemoryModule.Flag name) {
+        this.registers.setFlag(name);
+    }
+
+    /**
+     * Reset the register flag
+     *
+     * @param name The name of the register flag
+     */
+    public void resetFlag(RegisterMemoryModule.Flag name) {
+        this.registers.resetFlag(name);
     }
 
     /**
@@ -31,19 +72,14 @@ public class MemoryManager {
      * existing module
      */
     public boolean addModule(int index, MemoryModule module) throws IndexOutOfBoundsException {
-        if (index >= this.modules.size()) {
-            throw new IndexOutOfBoundsException("Index " +
-                    index + " doesn't exist in memory manager");
-        }
-
         boolean result = (this.modules.get(index) != null);
-
         this.modules.set(index, module);
-
         return result;
     }
 
     public void update() {
+        this.registers.update();
+
         for (MemoryModule module : modules) {
             module.update();
         }
@@ -56,7 +92,9 @@ public class MemoryManager {
      * @param value The value to save to the memory location
      */
     public void setMemoryValue(int address, int value) {
-        for (MemoryModule module : modules) {
+        this.registers.setValue(address);
+
+        for (MemoryModule module : this.modules) {
             module.setValue(address);
         }
 
@@ -79,17 +117,23 @@ public class MemoryManager {
     public MemoryReturn getMemoryValue(int address) throws AddressNotFoundException {
         MemoryReturn result = new MemoryReturn();
 
-        if (values.containsKey(address)) {
-            result.value = values.get(address);
+        if (this.values.containsKey(address)) {
+            result.value = this.values.get(address);
         } else {
             throw new AddressNotFoundException();
         }
 
         int accum = 0;
-        for (MemoryModule module : modules) {
+        accum += this.registers.checkTime();
+        if (this.registers.hasValue(address)) {
+            result.accessTime = accum + this.registers.accessTime();
+            return result;
+        }
+
+        for (MemoryModule module : this.modules) {
             accum += module.checkTime();
             if (module.hasValue(address)) {
-                result.accessTime = accum;
+                result.accessTime = accum + module.accessTime();
                 break;
             }
         }

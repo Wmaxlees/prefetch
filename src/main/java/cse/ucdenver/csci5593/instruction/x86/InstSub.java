@@ -5,16 +5,13 @@ import cse.ucdenver.csci5593.instruction.Instruction;
 import cse.ucdenver.csci5593.memory.MemoryManager;
 import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
 
-/**
- * Created by willi on 3/14/2016.
- */
-public class InstAdd extends Instruction {
+public class InstSub  extends Instruction {
     public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
         return 6;
     }
 
     public String opCode() {
-        return "ADD";
+        return "SUB";
     }
 
     public int execute(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
@@ -22,7 +19,7 @@ public class InstAdd extends Instruction {
             throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
         }
 
-        long result = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value +
+        long result = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value -
                      memoryManager.getMemoryValue(this.getOperand(1).getValue()).value;
 
         memoryManager.setMemoryValue(this.getOperand(0).getValue(), (int)result);
@@ -54,4 +51,5 @@ public class InstAdd extends Instruction {
             memoryManager.setFlag(RegisterMemoryModule.Flag.ZERO_FLAG);
         }
     }
+
 }
