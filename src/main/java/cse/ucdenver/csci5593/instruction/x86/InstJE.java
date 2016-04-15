@@ -4,14 +4,19 @@ import cse.ucdenver.csci5593.instruction.BadlyFormattedInstructionException;
 import cse.ucdenver.csci5593.instruction.Instruction;
 import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
+import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
 
-public class InstDiv  extends Instruction {
+/**
+ * Created by max on 4/15/16.
+ */
+public class InstJE extends Instruction {
+    @Override
     public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
-        return 20;
+        return 1;
     }
 
     public String opCode() {
-        return "DIV";
+        return "JE";
     }
 
     public int execute(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
@@ -19,20 +24,11 @@ public class InstDiv  extends Instruction {
             throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
         }
 
-        int eax = memoryManager.getMemoryValue(1).value;
-        int edx = memoryManager.getMemoryValue(7).value;
-        int divisor = (edx << 32 | eax);
-
-        int Quoitent = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value / divisor;
-        int remainder = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value % divisor;
-
-        memoryManager.setMemoryValue(memoryManager.getRegisterAddress("%edx"),remainder);
-        memoryManager.setMemoryValue(memoryManager.getRegisterAddress("%eax"),Quoitent);
-
-        
-
-        IPHelper.IncrementIP(memoryManager);
-
+        if (memoryManager.getFlagStatus(RegisterMemoryModule.Flag.ZERO_FLAG)) {
+            IPHelper.setIP(memoryManager, this.operands.get(0).getValue());
+        } else {
+            IPHelper.IncrementIP(memoryManager);
+        }
 
         return 0;
     }

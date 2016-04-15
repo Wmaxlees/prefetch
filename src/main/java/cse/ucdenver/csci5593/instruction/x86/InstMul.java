@@ -2,6 +2,7 @@ package cse.ucdenver.csci5593.instruction.x86;
 
 import cse.ucdenver.csci5593.instruction.BadlyFormattedInstructionException;
 import cse.ucdenver.csci5593.instruction.Instruction;
+import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
 import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
 
@@ -23,6 +24,7 @@ public class InstMul  extends Instruction {
         int edx = result >> 32;
         eax = result ^ (edx << 32);
    
+
         memoryManager.setMemoryValue(memoryManager.getRegisterAddress("%edx"), edx);
         memoryManager.setMemoryValue(memoryManager.getRegisterAddress("%eax"), eax);
        if(edx == 0)
@@ -31,8 +33,13 @@ public class InstMul  extends Instruction {
     	   memoryManager.setFlag(RegisterMemoryModule.Flag.OVERFLOW_FLAG);
        }
        else
+       {
     	   memoryManager.resetFlag(RegisterMemoryModule.Flag.CARRY_FLAG);
            memoryManager.resetFlag(RegisterMemoryModule.Flag.OVERFLOW_FLAG);
+
+       }
+        IPHelper.IncrementIP(memoryManager);
+
         return 0;
     }
 }

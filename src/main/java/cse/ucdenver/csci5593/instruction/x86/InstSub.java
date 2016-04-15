@@ -2,6 +2,8 @@ package cse.ucdenver.csci5593.instruction.x86;
 
 import cse.ucdenver.csci5593.instruction.BadlyFormattedInstructionException;
 import cse.ucdenver.csci5593.instruction.Instruction;
+import cse.ucdenver.csci5593.instruction.x86.helpers.FlagHelper;
+import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
 import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
 
@@ -25,6 +27,8 @@ public class InstSub  extends Instruction {
         memoryManager.setMemoryValue(this.getOperand(0).getValue(), (int)result);
 
         this.setFlags(memoryManager, result);
+
+        IPHelper.IncrementIP(memoryManager);
 
         return 0;
     }

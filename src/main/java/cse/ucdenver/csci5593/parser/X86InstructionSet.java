@@ -8,6 +8,7 @@ import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
 import cse.ucdenver.csci5593.memory.X86RegisterMemory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,8 +25,8 @@ public class X86InstructionSet implements InstructionSet {
     }
 
     @Override
-    public List<Instruction> generateInstructions(String[] tokens) throws ParserException {
-        ArrayList<Instruction> instructions = new ArrayList<>();
+    public HashMap<Integer, Instruction> generateInstructions(String[] tokens, int index) throws ParserException {
+        HashMap<Integer, Instruction> instructions = new HashMap<>();
 
         // Check operands first for necessary pointer loads
         int pointerIndex = -1;
@@ -43,7 +44,7 @@ public class X86InstructionSet implements InstructionSet {
                 Instruction loadInst = new InstMov();
                 loadInst.addOperand(new OperandX86Ptr(tokens[i]));
                 loadInst.addOperand(new OperandX86(OperandFlag.register, this.registers.getRegisterAddress("%ebx")));
-                instructions.add(loadInst);
+                instructions.put(index++, loadInst);
             }
         }
 
@@ -58,7 +59,7 @@ public class X86InstructionSet implements InstructionSet {
                 Instruction inst = new InstAdd();
                 inst.addOperand(this.parseOperand(tokens[1]));
                 inst.addOperand(this.parseOperand(tokens[2]));
-                instructions.add(inst);
+                instructions.put(index++, inst);
                 break;
             }
             case "MOV":
@@ -68,7 +69,7 @@ public class X86InstructionSet implements InstructionSet {
                 Instruction inst = new InstMov();
                 inst.addOperand(this.parseOperand(tokens[1]));
                 inst.addOperand(this.parseOperand(tokens[2]));
-                instructions.add(inst);
+                instructions.put(index++, inst);
                 break;
             }
             case "PUSH":
@@ -77,6 +78,9 @@ public class X86InstructionSet implements InstructionSet {
 
                 Instruction inst = new InstPush();
                 inst.addOperand(this.parseOperand(tokens[1]));
+
+                instructions.put(index++, inst);
+                break;
             }
             case "POP":
             case "POPL": {
@@ -84,6 +88,9 @@ public class X86InstructionSet implements InstructionSet {
 
                 Instruction inst = new InstPop();
                 inst.addOperand(this.parseOperand(tokens[1]));
+
+                instructions.put(index++, inst);
+                break;
             }
             default:
                 return null;
@@ -94,10 +101,11 @@ public class X86InstructionSet implements InstructionSet {
             Instruction storeInst = new InstMov();
             storeInst.addOperand(new OperandX86(OperandFlag.register, this.registers.getRegisterAddress("%ebx")));
             storeInst.addOperand(new OperandX86Ptr(tokens[pointerIndex]));
-            instructions.add(storeInst);
+            instructions.put(index++, storeInst);
 
             Instruction popInst = new InstPop();
             popInst.addOperand(new OperandX86(OperandFlag.register, this.registers.getRegisterAddress("%ebx")));
+            instructions.put(index++, popInst);
         }
 
         return instructions;
@@ -148,7 +156,7 @@ public class X86InstructionSet implements InstructionSet {
 
     @Override
     public int maxRegisterIndex() {
-        return 18;
+        return this.registers.getMaxRegisterIndex();
     }
 
     @Override
