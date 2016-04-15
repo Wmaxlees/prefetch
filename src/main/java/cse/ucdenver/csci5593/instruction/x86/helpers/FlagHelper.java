@@ -1,4 +1,4 @@
-package cse.ucdenver.csci5593.instruction.x86;
+package cse.ucdenver.csci5593.instruction.x86.helpers;
 
 import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
 

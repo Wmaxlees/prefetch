@@ -2,6 +2,7 @@ package cse.ucdenver.csci5593.instruction.x86;
 
 import cse.ucdenver.csci5593.instruction.BadlyFormattedInstructionException;
 import cse.ucdenver.csci5593.instruction.Instruction;
+import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
 
 public class InstMul  extends Instruction {
@@ -28,6 +29,9 @@ public class InstMul  extends Instruction {
    
         memoryManager.setMemoryValue(7, edx);
         memoryManager.setMemoryValue(1, eax);
+
+        IPHelper.IncrementIP(memoryManager);
+
         return 0;
     }
 }

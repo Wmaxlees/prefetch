@@ -3,6 +3,7 @@ package cse.ucdenver.csci5593.parser;
 import cse.ucdenver.csci5593.instruction.Instruction;
 import cse.ucdenver.csci5593.instruction.Operand;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -13,11 +14,11 @@ public interface InstructionSet {
      * Generates the correct instruction instances from
      * the passed token
      *
-     * @param token The token to determine the instruction
+     * @param tokens The tokens to determine the instruction
      * @return The correct instance of Instruction interface or
      *         null if the instruction isn't recognized
      */
-    List<Instruction> generateInstructions(String[] tokens);
+    HashMap<Integer, Instruction> generateInstructions(String[] tokens, int index);
 
     /**
      * @return The maximum index that represents a register for the given

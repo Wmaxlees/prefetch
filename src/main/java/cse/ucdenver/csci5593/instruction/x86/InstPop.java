@@ -3,6 +3,7 @@ package cse.ucdenver.csci5593.instruction.x86;
 import cse.ucdenver.csci5593.instruction.BadlyFormattedInstructionException;
 import cse.ucdenver.csci5593.instruction.Instruction;
 import cse.ucdenver.csci5593.instruction.OperandFlag;
+import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
 
 /**
@@ -36,6 +37,8 @@ public class InstPop extends Instruction {
 
         memoryManager.setMemoryValue(this.getOperand(0).getValue(), value);
         memoryManager.setMemoryValue(10, stackPointer-1);
+
+        IPHelper.IncrementIP(memoryManager);
 
         return 0;
     }

@@ -42,4 +42,11 @@ public interface RegisterMemoryModule extends MemoryModule {
      * @param name The name of the flag
      */
     void resetFlag(Flag name);
+
+    /**
+     * Get the maximum index of the registers
+     *
+     * @return The maximum register index
+     */
+    int getMaxRegisterIndex();
 }

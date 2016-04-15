@@ -12,17 +12,8 @@ public class Parser {
 
     private InstructionSet instSet;
 
-    // Hold the map between memory address and variable name
-    private HashMap<String, Integer> map;
-    // Hold the used memory addresses so we don't accidentally
-    // use the same slot twice. Index 0 is reserved for constants.
-    // 1-8 is reserved for general purpose registers
-    private int next;
-
     public Parser(InstructionSet instructionSet) {
         this.instSet = instructionSet;
-        this.map = new HashMap<>();
-        this.next = this.instSet.maxRegisterIndex();
     }
 
     /**
@@ -34,9 +25,10 @@ public class Parser {
      *         or null if the file isn't properly formatted
      * @see cse.ucdenver.csci5593.core.Core
      */
-    public Queue<Instruction> parseFile(String filename) {
+    public HashMap<Integer, Instruction> parseFile(String filename) {
         // Result
-        Queue<Instruction> result = new ArrayDeque<>();
+        HashMap<Integer, Instruction> result = new HashMap<>();
+        int instructionIndex = this.instSet.maxRegisterIndex() + 1;
 
         // Loop through the file
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
@@ -46,11 +38,11 @@ public class Parser {
                 // Split the line at the spaces
                 String[] splitLine = this.instSet.stripComments(line).split(" ");
 
-                // Create new instruction list
-                List<Instruction> instructions = this.instSet.generateInstructions(splitLine);
+                HashMap<Integer, Instruction> inst = this.instSet.generateInstructions(splitLine, instructionIndex);
+                instructionIndex += inst.size();
 
                 // Add instructions to set
-                result.addAll(instructions);
+                result.putAll(inst);
             }
         } catch (FileNotFoundException e) {
             System.err.print("Parse file not found: " + filename);
