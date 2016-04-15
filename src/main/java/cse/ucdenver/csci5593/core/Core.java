@@ -3,6 +3,7 @@ package cse.ucdenver.csci5593.core;
 import cse.ucdenver.csci5593.instruction.Instruction;
 import cse.ucdenver.csci5593.memory.MemoryManager;
 
+import java.util.HashMap;
 import java.util.Queue;
 
 /**
@@ -14,7 +15,7 @@ public interface Core {
      *
      * @param list The list of instructions to execute
      */
-    void setInstruction(Queue<Instruction> list);
+    void setInstruction(HashMap<Integer, Instruction> list);
     boolean update();
     int getRuntime();
     void setMemoryManager(MemoryManager mm);

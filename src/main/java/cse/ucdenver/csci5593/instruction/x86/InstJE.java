@@ -4,35 +4,32 @@ import cse.ucdenver.csci5593.instruction.BadlyFormattedInstructionException;
 import cse.ucdenver.csci5593.instruction.Instruction;
 import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
+import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
 
-public class InstMul  extends Instruction {
+/**
+ * Created by max on 4/15/16.
+ */
+public class InstJE extends Instruction {
+    @Override
     public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
-        return 20;
+        return 1;
     }
-    public String opCode()
-    {
-        return "MUL";
+
+    public String opCode() {
+        return "JE";
     }
+
     public int execute(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
         if (this.operands.size() != 1) {
             throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
         }
 
-        int result = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value *
-                     memoryManager.getMemoryValue(1).value;
-
-        int eax = memoryManager.getMemoryValue(1).value;
-        int edx = memoryManager.getMemoryValue(7).value;
-        
-        edx = result >> 32;
-        eax = result ^ (edx << 32);
-   
-        memoryManager.setMemoryValue(7, edx);
-        memoryManager.setMemoryValue(1, eax);
-
-        IPHelper.IncrementIP(memoryManager);
+        if (memoryManager.getFlagStatus(RegisterMemoryModule.Flag.ZERO_FLAG)) {
+            IPHelper.setIP(memoryManager, this.operands.get(0).getValue());
+        } else {
+            IPHelper.IncrementIP(memoryManager);
+        }
 
         return 0;
     }
 }
-

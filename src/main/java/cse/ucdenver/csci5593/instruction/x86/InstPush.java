@@ -3,6 +3,7 @@ package cse.ucdenver.csci5593.instruction.x86;
 import cse.ucdenver.csci5593.instruction.BadlyFormattedInstructionException;
 import cse.ucdenver.csci5593.instruction.Instruction;
 import cse.ucdenver.csci5593.instruction.OperandFlag;
+import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
 
 /**
@@ -34,6 +35,8 @@ public class InstPush extends Instruction {
 
         memoryManager.setMemoryValue(stackAddress, value);
         memoryManager.setMemoryValue(10, stackAddress + 1);
+
+        IPHelper.IncrementIP(memoryManager);
 
         return 0;
     }

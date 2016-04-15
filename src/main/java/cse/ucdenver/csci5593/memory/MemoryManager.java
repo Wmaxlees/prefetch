@@ -33,6 +33,7 @@ public class MemoryManager {
      */
     public void setRegisterMemoryModule(RegisterMemoryModule rmm) {
         this.registers = rmm;
+        this.setMemoryValue(this.registers.getRegisterAddress("%ip"), this.registers.getMaxRegisterIndex() + 1);
     }
 
     /**
@@ -43,6 +44,16 @@ public class MemoryManager {
      */
     public int getRegisterAddress(String name) {
         return this.registers.getRegisterAddress(name);
+    }
+
+    /**
+     * Get the status of a flag
+     *
+     * @param name Name of the flag
+     * @return The status of the flag
+     */
+    public boolean getFlagStatus(RegisterMemoryModule.Flag name) {
+        return this.registers.getFlag(name);
     }
 
     /**

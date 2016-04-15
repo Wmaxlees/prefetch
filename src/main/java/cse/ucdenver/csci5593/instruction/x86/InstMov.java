@@ -3,6 +3,7 @@ package cse.ucdenver.csci5593.instruction.x86;
 import cse.ucdenver.csci5593.instruction.BadlyFormattedInstructionException;
 import cse.ucdenver.csci5593.instruction.Instruction;
 import cse.ucdenver.csci5593.instruction.OperandFlag;
+import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
 
 /**
@@ -30,6 +31,8 @@ public class InstMov extends Instruction {
         } else {
             result += memoryManager.getMemoryValue(this.getOperand(0).getValue()).accessTime;
         }
+
+        IPHelper.IncrementIP(memoryManager);
 
         return result;
     }

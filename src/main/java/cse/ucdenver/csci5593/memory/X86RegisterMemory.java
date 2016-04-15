@@ -94,6 +94,11 @@ public class X86RegisterMemory implements RegisterMemoryModule {
     }
 
     @Override
+    public int getMaxRegisterIndex() {
+        return 18;
+    }
+
+    @Override
     public void setValue(int memoryLocation) {
 
     }

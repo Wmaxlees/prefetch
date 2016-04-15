@@ -3,6 +3,7 @@ package cse.ucdenver.csci5593.core;
 import cse.ucdenver.csci5593.instruction.Instruction;
 import cse.ucdenver.csci5593.memory.MemoryManager;
 
+import java.util.HashMap;
 import java.util.Queue;
 
 public class BasicCoreImpl implements Core
@@ -12,10 +13,10 @@ public class BasicCoreImpl implements Core
 	int currentCycle;
 	int currentInstCycle;
 	Instruction currentInst;
-	Queue<Instruction> inst;
+	HashMap<Integer, Instruction> inst;
 	
 	// set-up the instruction
-	public void setInstruction(Queue<Instruction> list)
+	public void setInstruction(HashMap<Integer, Instruction> list)
 	{
 		this.inst = list;
 	}
@@ -29,7 +30,7 @@ public class BasicCoreImpl implements Core
 		if (this.currentInstCycle == 0)
 		{
 			this.currentInst.execute(this.mm);
-			this.currentInst = inst.poll();
+			this.currentInst = inst.get(mm.getMemoryValue(mm.getRegisterAddress("%ip")));
             if (this.currentInst == null) {
                 return false;
             }
@@ -44,8 +45,7 @@ public class BasicCoreImpl implements Core
 	}
 	
 	// Setting the Memory Manager
-	public void setMemoryManager(MemoryManager mm)
-	{
+	public void setMemoryManager(MemoryManager mm) {
 		this.mm = mm;
 	}
 }
