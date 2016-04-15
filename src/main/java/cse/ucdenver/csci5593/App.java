@@ -30,7 +30,9 @@ public class App
         core.setInstruction(inst);
         core.setMemoryManager(mm);
 
-        while (core.update());
+        while (core.update()) {
+            mm.update();
+        }
 
     }
 }

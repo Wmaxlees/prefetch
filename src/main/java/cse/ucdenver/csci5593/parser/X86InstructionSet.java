@@ -4,6 +4,8 @@ import cse.ucdenver.csci5593.instruction.Instruction;
 import cse.ucdenver.csci5593.instruction.Operand;
 import cse.ucdenver.csci5593.instruction.OperandFlag;
 import cse.ucdenver.csci5593.instruction.x86.*;
+import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
+import cse.ucdenver.csci5593.memory.X86RegisterMemory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,13 @@ import java.util.regex.Pattern;
  * Created by willi on 3/14/2016.
  */
 public class X86InstructionSet implements InstructionSet {
+
+    private RegisterMemoryModule registers;
+
+    public X86InstructionSet() {
+        this.registers = new X86RegisterMemory();
+    }
+
     @Override
     public List<Instruction> generateInstructions(String[] tokens) throws ParserException {
         ArrayList<Instruction> instructions = new ArrayList<>();
@@ -28,12 +37,12 @@ public class X86InstructionSet implements InstructionSet {
                 pointerIndex = i;
 
                 Instruction pushInst = new InstPush();
-                pushInst.addOperand(new OperandX86(OperandFlag.register, this.registerAddress("%ebx")));
+                pushInst.addOperand(new OperandX86(OperandFlag.register, this.registers.getRegisterAddress("%ebx")));
 
                 // Load the pointer value into a reg
                 Instruction loadInst = new InstMov();
                 loadInst.addOperand(new OperandX86Ptr(tokens[i]));
-                loadInst.addOperand(new OperandX86(OperandFlag.register, this.registerAddress("%ebx")));
+                loadInst.addOperand(new OperandX86(OperandFlag.register, this.registers.getRegisterAddress("%ebx")));
                 instructions.add(loadInst);
             }
         }
@@ -83,12 +92,12 @@ public class X86InstructionSet implements InstructionSet {
         if (pointerIndex != -1) {
             // Store the pointer value from the reg
             Instruction storeInst = new InstMov();
-            storeInst.addOperand(new OperandX86(OperandFlag.register, this.registerAddress("%ebx")));
+            storeInst.addOperand(new OperandX86(OperandFlag.register, this.registers.getRegisterAddress("%ebx")));
             storeInst.addOperand(new OperandX86Ptr(tokens[pointerIndex]));
             instructions.add(storeInst);
 
             Instruction popInst = new InstPop();
-            popInst.addOperand(new OperandX86(OperandFlag.register, this.registerAddress("%ebx")));
+            popInst.addOperand(new OperandX86(OperandFlag.register, this.registers.getRegisterAddress("%ebx")));
         }
 
         return instructions;
@@ -110,7 +119,7 @@ public class X86InstructionSet implements InstructionSet {
         } else if (this.isLiteral(token)) {
             operand = new OperandX86(OperandFlag.literal, this.getLiteralValue(token));
         } else if (this.isRegister(token)) {
-            operand = new OperandX86(OperandFlag.register, registerAddress(token));
+            operand = new OperandX86(OperandFlag.register, this.registers.getRegisterAddress(token));
         } else if (false) {
             // TODO: HANDLE DIRECT ADDRESSING
         } else {
@@ -127,66 +136,13 @@ public class X86InstructionSet implements InstructionSet {
      * @return True if the token is a pointer
      */
     private boolean isPointer(String token) {
-        Pattern pattern = Pattern.compile("[\\-\\+]*[0-9]*\\(%[a-zA-Z]+\\)");
+        Pattern pattern = Pattern.compile("[-+]*[0-9]*\\(%[a-zA-Z]+\\)");
         Matcher matcher = pattern.matcher(token);
 
         if (matcher.matches()) {
             return true;
         } else {
             return false;
-        }
-    }
-
-    /**
-     * Get's the register's "memory" address for use
-     * in the rest of the application
-     *
-     * @param token The token to determine the correct
-     *              address of
-     * @return The integer address of the register
-     */
-    private int registerAddress(String token) {
-        String lower = token.toLowerCase();
-
-        switch (lower) {
-            case "%eax":             // 1 and 2
-                return 1;
-            case "%ax":              // 2
-                return 2;
-            case "%ebx":             // 3 and 4
-                return 3;
-            case "%bx":              // 4
-                return 4;
-            case "%ecx":             // 5 and 6
-                return 5;
-            case "%cx":              // 6
-                return 6;
-            case "%edx":             // 7 and 8
-                return 7;
-            case "%dx":              // 8
-                return 8;
-            case "%ebp":              // 9
-                return 9;
-            case "%esp":              // 10
-                return 10;
-            case "%di":              // 11
-                return 11;
-            case "%si":              // 12
-                return 12;
-            case "%cs":              // 13
-                return 13;
-            case "%ss":              // 14
-                return 14;
-            case "%es":              // 15
-                return 15;
-            case "%ds":              // 16
-                return 16;
-            case "%ip":              // 17
-                return 17;
-            case "%flags":           // 18
-                return 18;
-            default:
-                return 0;
         }
     }
 
@@ -246,7 +202,7 @@ public class X86InstructionSet implements InstructionSet {
     private boolean isRegister(String token) {
         if (token.startsWith("%")) {
             String regName = token.substring(1);
-            if (this.registerAddress(regName) != 0) {
+            if (this.registers.getRegisterAddress(regName) != 0) {
                 throw new ParserException("Unrecognized register: " + regName);
             } else {
                 return true;
