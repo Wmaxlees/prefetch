@@ -9,6 +9,7 @@ import cse.ucdenver.csci5593.memory.MemoryManager;
 import cse.ucdenver.csci5593.parser.Parser;
 import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -18,7 +19,7 @@ public class App
     public static void main( String[] args )
     {
         Parser parser = new Parser(new X86InstructionSet());
-        Queue<Instruction> inst = parser.parseFile("test.s");
+        HashMap<Integer, Instruction> inst = parser.parseFile("test.s");
 
         MemoryManager mm = new MemoryManager();
         mm.addModule(0, new FIFOCache(20, 5));
