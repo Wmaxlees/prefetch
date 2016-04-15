@@ -2,12 +2,21 @@ package cse.ucdenver.csci5593.instruction;
 
 import cse.ucdenver.csci5593.memory.MemoryManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by willi on 3/14/2016.
  */
 public abstract class Instruction {
+
+    /**
+     * Cons
+     */
+    public Instruction() {
+        this.operands = new ArrayList<>();
+    }
+
     /**
      * @return The number of cycles needed to execute
      * the instruction
