@@ -92,6 +92,32 @@ public class X86InstructionSet implements InstructionSet {
                 instructions.put(index++, inst);
                 break;
             }
+            case "MUL":
+            case "MULL": {
+                this.checkOperandNumber(tokens, 1);
+
+                Instruction inst = new InstMul();
+                inst.addOperand(this.parseOperand(tokens[1]));
+                instructions.put(index++, inst);
+                break;
+            }
+            case "DIV":
+            case "DIVL": {
+                this.checkOperandNumber(tokens, 1);
+
+                Instruction inst = new InstDiv();
+                inst.addOperand(this.parseOperand(tokens[1]));
+                instructions.put(index++, inst);
+                break;
+            }
+            case "JE": {
+                this.checkOperandNumber(tokens, 1);
+
+                Instruction inst = new InstJE();
+                inst.addOperand(this.parseOperand(tokens[1]));
+                instructions.put(index++, inst);
+                break;
+            }
             default:
                 return null;
         }

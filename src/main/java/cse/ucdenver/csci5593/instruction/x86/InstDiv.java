@@ -25,10 +25,14 @@ public class InstDiv  extends Instruction {
 
         int Quoitent = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value / divisor;
         int remainder = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value % divisor;
-        memoryManager.setMemoryValue(7,remainder);
-        memoryManager.setMemoryValue(1,Quoitent);
+
+        memoryManager.setMemoryValue(memoryManager.getRegisterAddress("%edx"),remainder);
+        memoryManager.setMemoryValue(memoryManager.getRegisterAddress("%eax"),Quoitent);
+
+        
 
         IPHelper.IncrementIP(memoryManager);
+
 
         return 0;
     }
