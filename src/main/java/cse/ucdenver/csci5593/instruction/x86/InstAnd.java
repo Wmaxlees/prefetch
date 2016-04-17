@@ -33,6 +33,8 @@ public class InstAnd  extends Instruction {
 
 private void setFlags(MemoryManager memoryManager, long result) {
    
+	memoryManager.resetFlag(RegisterMemoryModule.Flag.CARRY_FLAG);
+	memoryManager.resetFlag(RegisterMemoryModule.Flag.OVERFLOW_FLAG);
    if (FlagHelper.GetParityFlag(result)) {
        memoryManager.setFlag(RegisterMemoryModule.Flag.PARITY_FLAG);
    }
