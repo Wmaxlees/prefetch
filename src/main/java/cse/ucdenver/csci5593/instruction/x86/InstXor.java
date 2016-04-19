@@ -9,7 +9,7 @@ import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
 
 public class InstXor  extends Instruction {
     public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
-        return 20;
+        return 2;
     }
     public String opCode()
     {
@@ -19,8 +19,8 @@ public class InstXor  extends Instruction {
         if (this.operands.size() != 2) {
             throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
         }
-        long result = memoryManager.getMemoryValue(this.getOperand(7).getValue()).value ^
-                memoryManager.getMemoryValue(this.getOperand(5).getValue()).value;
+        long result = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value ^
+                memoryManager.getMemoryValue(this.getOperand(1).getValue()).value;
 
    memoryManager.setMemoryValue(this.getOperand(5).getValue(), (int)result);
 
