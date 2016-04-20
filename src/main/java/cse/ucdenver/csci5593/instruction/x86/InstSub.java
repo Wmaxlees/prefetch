@@ -6,6 +6,7 @@ import cse.ucdenver.csci5593.instruction.x86.helpers.FlagHelper;
 import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
 import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
+import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
 public class InstSub  extends Instruction {
     public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
@@ -54,6 +55,11 @@ public class InstSub  extends Instruction {
         if (FlagHelper.GetZeroFlag(result)) {
             memoryManager.setFlag(RegisterMemoryModule.Flag.ZERO_FLAG);
         }
+    }
+
+    static {
+        X86InstructionSet.RegisterInstruction(InstSub.class, "SUB");
+        X86InstructionSet.RegisterInstruction(InstSub.class, "SUBL");
     }
 
 }

@@ -9,6 +9,7 @@ import cse.ucdenver.csci5593.memory.X86RegisterMemory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,6 +20,11 @@ import java.util.regex.Pattern;
 public class X86InstructionSet implements InstructionSet {
 
     private RegisterMemoryModule registers;
+    private static HashMap<String, Class<? extends Instruction>> is = new HashMap<>();
+
+    public static void RegisterInstruction(Class<? extends Instruction> instruction, String key) {
+        is.put(key, instruction);
+    }
 
     public X86InstructionSet() {
         this.registers = new X86RegisterMemory();
@@ -51,75 +57,21 @@ public class X86InstructionSet implements InstructionSet {
 
         String upper = tokens[0].toUpperCase();
 
-        switch (upper) {
-            case "ADD":
-            case "ADDL": {
-                this.checkOperandNumber(tokens, 2);
+        Class<? extends Instruction> instClass = is.get(upper);
+        if (instClass == null) {
+            return null;
+        }
 
-                Instruction inst = new InstAdd();
-                inst.addOperand(this.parseOperand(tokens[1]));
-                inst.addOperand(this.parseOperand(tokens[2]));
-                instructions.put(index++, inst);
-                break;
-            }
-            case "MOV":
-            case "MOVL": {
-                this.checkOperandNumber(tokens, 2);
+        Instruction inst = null;
+        try {
+            inst = instClass.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            System.err.print("Error instantiating instance of instruction class");
+            return null;
+        }
 
-                Instruction inst = new InstMov();
-                inst.addOperand(this.parseOperand(tokens[1]));
-                inst.addOperand(this.parseOperand(tokens[2]));
-                instructions.put(index++, inst);
-                break;
-            }
-            case "PUSH":
-            case "PUSHL": {
-                this.checkOperandNumber(tokens, 1);
-
-                Instruction inst = new InstPush();
-                inst.addOperand(this.parseOperand(tokens[1]));
-
-                instructions.put(index++, inst);
-                break;
-            }
-            case "POP":
-            case "POPL": {
-                this.checkOperandNumber(tokens, 1);
-
-                Instruction inst = new InstPop();
-                inst.addOperand(this.parseOperand(tokens[1]));
-
-                instructions.put(index++, inst);
-                break;
-            }
-            case "MUL":
-            case "MULL": {
-                this.checkOperandNumber(tokens, 1);
-
-                Instruction inst = new InstMul();
-                inst.addOperand(this.parseOperand(tokens[1]));
-                instructions.put(index++, inst);
-                break;
-            }
-            case "DIV":
-            case "DIVL": {
-                this.checkOperandNumber(tokens, 1);
-
-                Instruction inst = new InstDiv();
-                inst.addOperand(this.parseOperand(tokens[1]));
-                instructions.put(index++, inst);
-                break;
-            }
-            case "JE": {
-                this.checkOperandNumber(tokens, 1);
-
-                Instruction inst = new InstJE();
-                inst.addOperand(this.parseOperand(tokens[1]));
-                instructions.put(index++, inst);
-                break;
-            }
-            default:
-                return null;
+        for (int i = 1; i < tokens.length; ++i) {
+            inst.addOperand(this.parseOperand(tokens[i]));
         }
 
         if (pointerIndex != -1) {

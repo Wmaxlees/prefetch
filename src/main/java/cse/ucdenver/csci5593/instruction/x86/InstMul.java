@@ -5,6 +5,7 @@ import cse.ucdenver.csci5593.instruction.Instruction;
 import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
 import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
+import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
 public class InstMul  extends Instruction {
     public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
@@ -41,6 +42,11 @@ public class InstMul  extends Instruction {
         IPHelper.IncrementIP(memoryManager);
 
         return 0;
+    }
+
+    static {
+        X86InstructionSet.RegisterInstruction(InstMul.class, "MUL");
+        X86InstructionSet.RegisterInstruction(InstMul.class, "MULL");
     }
 }
 
