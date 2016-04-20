@@ -8,6 +8,7 @@ import cse.ucdenver.csci5593.instruction.BadlyFormattedInstructionException;
 import cse.ucdenver.csci5593.instruction.Instruction;
 import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
+import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
 public class InstJMP extends Instruction {
 	@Override
@@ -27,7 +28,11 @@ public class InstJMP extends Instruction {
 		
 	    IPHelper.setIP(memoryManager, this.operands.get(0).getValue());
 	    return 0;
-	}	
+	}
+
+	static {
+		X86InstructionSet.RegisterInstruction(InstJMP.class, "JMP");
+	}
 }
 
 
