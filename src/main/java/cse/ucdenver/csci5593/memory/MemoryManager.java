@@ -14,9 +14,9 @@ public class MemoryManager {
      * Holds the memory modules (attempts to access
      * lower indices first)
      */
-    private RegisterMemoryModule registers;
-    private List<MemoryModule> modules;
-    private HashMap<Integer, Integer> values;
+    protected RegisterMemoryModule registers;
+    protected List<MemoryModule> modules;
+    protected HashMap<Integer, Integer> values;
 
     /**
      * Create a new instance of the MemoryManager
@@ -33,7 +33,6 @@ public class MemoryManager {
      */
     public void setRegisterMemoryModule(RegisterMemoryModule rmm) {
         this.registers = rmm;
-        this.setMemoryValue(this.registers.getRegisterAddress("%ip"), this.registers.getMaxRegisterIndex() + 1);
     }
 
     /**
@@ -44,16 +43,6 @@ public class MemoryManager {
      */
     public int getRegisterAddress(String name) {
         return this.registers.getRegisterAddress(name);
-    }
-
-    /**
-     * Get the status of a flag
-     *
-     * @param name Name of the flag
-     * @return The status of the flag
-     */
-    public boolean getFlagStatus(RegisterMemoryModule.Flag name) {
-        return this.registers.getFlag(name);
     }
 
     /**
@@ -151,4 +140,10 @@ public class MemoryManager {
 
         return result;
     }
+    
+    // return the same values for modules for HelperMemoryManager
+    HelperMemoryManager GenerateHelper()
+	{
+		return new HelperMemoryManager(values, modules);
+	}
 }
