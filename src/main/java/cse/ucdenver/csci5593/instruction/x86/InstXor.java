@@ -6,6 +6,7 @@ import cse.ucdenver.csci5593.instruction.x86.helpers.FlagHelper;
 import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
 import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
+import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
 public class InstXor  extends Instruction {
     public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
@@ -22,41 +23,44 @@ public class InstXor  extends Instruction {
         long result = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value ^
                 memoryManager.getMemoryValue(this.getOperand(1).getValue()).value;
 
-   memoryManager.setMemoryValue(this.getOperand(5).getValue(), (int)result);
+       memoryManager.setMemoryValue(this.getOperand(5).getValue(), (int)result);
 
-   this.setFlags(memoryManager, result);
+       this.setFlags(memoryManager, result);
 
-   IPHelper.IncrementIP(memoryManager);
+       IPHelper.IncrementIP(memoryManager);
 
-   return 0;
-}
+       return 0;
+    }
 
-private void setFlags(MemoryManager memoryManager, long result) {
+    private void setFlags(MemoryManager memoryManager, long result) {
 	
-	memoryManager.resetFlag(RegisterMemoryModule.Flag.CARRY_FLAG);
-	memoryManager.resetFlag(RegisterMemoryModule.Flag.OVERFLOW_FLAG);
+	    memoryManager.resetFlag(RegisterMemoryModule.Flag.CARRY_FLAG);
+	    memoryManager.resetFlag(RegisterMemoryModule.Flag.OVERFLOW_FLAG);
 	
    
-   if (FlagHelper.GetParityFlag(result)) {
-       memoryManager.setFlag(RegisterMemoryModule.Flag.PARITY_FLAG);
-   }
-       else {
-        memoryManager.resetFlag(RegisterMemoryModule.Flag.PARITY_FLAG);
-   }
+        if (FlagHelper.GetParityFlag(result)) {
+            memoryManager.setFlag(RegisterMemoryModule.Flag.PARITY_FLAG);
+        } else {
+            memoryManager.resetFlag(RegisterMemoryModule.Flag.PARITY_FLAG);
+        }
 
-   if (FlagHelper.GetSignFlag(result)) {
-       memoryManager.setFlag(RegisterMemoryModule.Flag.SIGN_FLAG);
-   }
-       else {
-        memoryManager.resetFlag(RegisterMemoryModule.Flag.SIGN_FLAG);
-   }
+        if (FlagHelper.GetSignFlag(result)) {
+            memoryManager.setFlag(RegisterMemoryModule.Flag.SIGN_FLAG);
+        } else {
+            memoryManager.resetFlag(RegisterMemoryModule.Flag.SIGN_FLAG);
+        }
 
-   if (FlagHelper.GetZeroFlag(result)) {
-        memoryManager.setFlag(RegisterMemoryModule.Flag.ZERO_FLAG);
-   }
-       else {
-        memoryManager.resetFlag(RegisterMemoryModule.Flag.ZERO_FLAG);
+        if (FlagHelper.GetZeroFlag(result)) {
+            memoryManager.setFlag(RegisterMemoryModule.Flag.ZERO_FLAG);
+        } else {
+            memoryManager.resetFlag(RegisterMemoryModule.Flag.ZERO_FLAG);
+        }
+    }
+
+    static {
+        X86InstructionSet.RegisterInstruction(InstXor.class, "XOR");
+        X86InstructionSet.RegisterInstruction(InstXor.class, "XORL");
+    }
 }
 
-}}
 
