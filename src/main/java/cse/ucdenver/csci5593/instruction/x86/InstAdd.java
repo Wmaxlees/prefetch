@@ -6,6 +6,7 @@ import cse.ucdenver.csci5593.instruction.x86.helpers.FlagHelper;
 import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
 import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
+import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
 /**
  * Created by willi on 3/14/2016.
@@ -57,5 +58,10 @@ public class InstAdd extends Instruction {
         if (FlagHelper.GetZeroFlag(result)) {
             memoryManager.setFlag(RegisterMemoryModule.Flag.ZERO_FLAG);
         }
+    }
+
+    static {
+        X86InstructionSet.RegisterInstruction(InstAdd.class, "ADD");
+        X86InstructionSet.RegisterInstruction(InstAdd.class, "ADDL");
     }
 }

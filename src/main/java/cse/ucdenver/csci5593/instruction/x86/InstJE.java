@@ -5,6 +5,7 @@ import cse.ucdenver.csci5593.instruction.Instruction;
 import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
 import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
+import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
 /**
  * Created by max on 4/15/16.
@@ -31,5 +32,10 @@ public class InstJE extends Instruction {
         }
 
         return 0;
+    }
+
+    static {
+        X86InstructionSet.RegisterInstruction(InstJE.class, "JE");
+        X86InstructionSet.RegisterInstruction(InstJE.class, "JZ");
     }
 }

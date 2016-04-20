@@ -5,6 +5,7 @@ import cse.ucdenver.csci5593.instruction.Instruction;
 import cse.ucdenver.csci5593.instruction.OperandFlag;
 import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
+import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
 /**
  * Created by max on 4/7/16.
@@ -71,5 +72,10 @@ public class InstMov extends Instruction {
         memoryManager.setMemoryValue(addrA, memoryManager.getMemoryValue(addrB).value);
 
         return 0;
+    }
+
+    static {
+        X86InstructionSet.RegisterInstruction(InstMov.class, "MOV");
+        X86InstructionSet.RegisterInstruction(InstMov.class, "MOVL");
     }
 }
