@@ -5,6 +5,7 @@ import cse.ucdenver.csci5593.instruction.Instruction;
 import cse.ucdenver.csci5593.instruction.OperandFlag;
 import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
+import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
 /**
  * Created by max on 4/7/16.
@@ -39,5 +40,10 @@ public class InstPush extends Instruction {
         IPHelper.IncrementIP(memoryManager);
 
         return 0;
+    }
+
+    static {
+        X86InstructionSet.RegisterInstruction(InstPush.class, "PUSH");
+        X86InstructionSet.RegisterInstruction(InstPush.class, "PUSHL");
     }
 }
