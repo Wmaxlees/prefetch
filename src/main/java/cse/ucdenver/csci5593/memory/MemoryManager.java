@@ -1,5 +1,6 @@
 package cse.ucdenver.csci5593.memory;
 
+import cse.ucdenver.csci5593.memory.RegisterMemoryModule.Flag;
 import cse.ucdenver.csci5593.memory.exceptions.AddressNotFoundException;
 
 import java.util.ArrayList;
@@ -43,6 +44,16 @@ public class MemoryManager {
      */
     public int getRegisterAddress(String name) {
         return this.registers.getRegisterAddress(name);
+    }
+    
+    /**
+     * Get the status of a flag
+     *
+     * @param name Name of the flag
+     * @return The status of the flag
+     */
+    public boolean getFlagStatus(RegisterMemoryModule.Flag name) {
+        return this.registers.getFlag(name);
     }
 
     /**
@@ -141,9 +152,15 @@ public class MemoryManager {
         return result;
     }
     
-    // return the same values for modules for HelperMemoryManager
+    
+    /**
+     * return the same values for modules for HelperMemoryManager
+     */
+    
     HelperMemoryManager GenerateHelper()
 	{
 		return new HelperMemoryManager(values, modules);
 	}
+
+   
 }
