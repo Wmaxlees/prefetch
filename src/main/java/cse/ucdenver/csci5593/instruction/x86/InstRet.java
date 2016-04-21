@@ -9,22 +9,21 @@ import cse.ucdenver.csci5593.memory.MemoryManager.MemoryReturn;
 import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
 import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
-public class InstRet  extends Instruction {
-    public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
+public class InstRet extends Instruction {
+    public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException
+    {
         return 1;
     }
     public String opCode()
     {
         return "RET";
     }
-    public int execute(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
-       // if (this.operands.size() != 1) {
-          //  throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
-        //}
-    	boolean operand =(this.operands != null);
+    public int execute(MemoryManager memoryManager) throws BadlyFormattedInstructionException 
+    {
+    	boolean operand = (this.operands != null);
     	if (operand && this.operands.size()!= 1)
     	{
-    		 throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
+    	 throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
     	}
  
         int result = memoryManager.getMemoryValue(memoryManager.getRegisterAddress("%cs")).value;
@@ -33,18 +32,19 @@ public class InstRet  extends Instruction {
         {
         int sp = memoryManager.getMemoryValue(memoryManager.getRegisterAddress("%esp")).value;
         sp -= this.getOperand(0).getValue();
-        memoryManager.setMemoryValue(memoryManager.getRegisterAddress("%esp"), sp);
+        memoryManager.setMemoryValue(memoryManager.getRegisterAddress("%esp"),sp);
         }
-        IPHelper.setIP(memoryManager, result);
+        IPHelper.setIP(memoryManager,result);
         return 0;
     }
-	private int operand(int i) {
+	private int operand(int i)
+	{
 		
 		return 0;
 	}
 	static
 	{
-      X86InstructionSet.RegisterInstruction(InstRet.class, "RET");
+      X86InstructionSet.RegisterInstruction(InstRet.class,"RET");
 	}
 }
 
