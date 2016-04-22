@@ -22,8 +22,9 @@ public class InstOr extends Instruction {
         if (this.operands.size() != 2) {
             throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
         }
-        long result = memoryManager.getMemoryValue(this.getOperand(0).getValue(memoryManager)).value |
-                memoryManager.getMemoryValue(this.getOperand(1).getValue(memoryManager)).value;
+
+        long result = memoryManager.getMemoryValue(this.getOperand(0).getValue(memoryManager)).value
+                | memoryManager.getMemoryValue(this.getOperand(1).getValue(memoryManager)).value;
 
         memoryManager.setMemoryValue(this.getOperand(5).getValue(memoryManager), (int) result);
 
@@ -63,4 +64,3 @@ public class InstOr extends Instruction {
     }
 
 }
-

@@ -8,36 +8,37 @@ import cse.ucdenver.csci5593.memory.MemoryManager;
 import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
 import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
-public class InstXor  extends Instruction {
+public class InstXor extends Instruction {
     public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
         return 2;
     }
-    public String opCode()
-    {
+
+    public String opCode() {
         return "XOR";
     }
+
     public int execute(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
         if (this.operands.size() != 2) {
             throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
         }
-        long result = memoryManager.getMemoryValue(this.getOperand(0).getValue(memoryManager)).value ^
-                memoryManager.getMemoryValue(this.getOperand(1).getValue(memoryManager)).value;
 
-       memoryManager.setMemoryValue(this.getOperand(5).getValue(memoryManager), (int)result);
+        long result = memoryManager.getMemoryValue(this.getOperand(0).getValue(memoryManager)).value
+                ^ memoryManager.getMemoryValue(this.getOperand(1).getValue(memoryManager)).value;
 
-       this.setFlags(memoryManager, result);
+        memoryManager.setMemoryValue(this.getOperand(5).getValue(memoryManager), (int) result);
 
-       IPHelper.IncrementIP(memoryManager);
+        this.setFlags(memoryManager, result);
 
-       return 0;
+        IPHelper.IncrementIP(memoryManager);
+
+        return 0;
     }
 
     private void setFlags(MemoryManager memoryManager, long result) {
-	
-	    memoryManager.resetFlag(RegisterMemoryModule.Flag.CARRY_FLAG);
-	    memoryManager.resetFlag(RegisterMemoryModule.Flag.OVERFLOW_FLAG);
-	
-   
+
+        memoryManager.resetFlag(RegisterMemoryModule.Flag.CARRY_FLAG);
+        memoryManager.resetFlag(RegisterMemoryModule.Flag.OVERFLOW_FLAG);
+
         if (FlagHelper.GetParityFlag(result)) {
             memoryManager.setFlag(RegisterMemoryModule.Flag.PARITY_FLAG);
         } else {
@@ -62,5 +63,3 @@ public class InstXor  extends Instruction {
         X86InstructionSet.RegisterInstruction(InstXor.class, "XORL");
     }
 }
-
-
