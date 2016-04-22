@@ -1,6 +1,5 @@
 package cse.ucdenver.csci5593.memory;
 
-import cse.ucdenver.csci5593.memory.RegisterMemoryModule.Flag;
 import cse.ucdenver.csci5593.memory.exceptions.AddressNotFoundException;
 
 import java.util.ArrayList;
