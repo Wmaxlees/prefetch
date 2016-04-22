@@ -72,7 +72,7 @@ public class X86RegisterMemory implements RegisterMemoryModule {
                 return 9;
             case "%esp":              // 10
                 return 10;
-            case "%di":              // 11
+            case "%edi":              // 11
                 return 11;
             case "%si":              // 12
                 return 12;
