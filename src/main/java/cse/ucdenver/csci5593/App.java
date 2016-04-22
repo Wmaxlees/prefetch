@@ -41,6 +41,7 @@ public class App
 
         while (core.update()) {
             mm.update();
+            
         }
 
     }
