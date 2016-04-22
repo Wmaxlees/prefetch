@@ -2,6 +2,7 @@ package cse.ucdenver.csci5593.instruction.x86;
 
 import cse.ucdenver.csci5593.instruction.BadlyFormattedInstructionException;
 import cse.ucdenver.csci5593.instruction.Instruction;
+import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
 import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
@@ -23,6 +24,9 @@ public class InstStos extends Instruction {
         int eax = esp + edi;
         memoryManager.setMemoryValue(memoryManager.getRegisterAddress("%edi"), edi + 1);
         memoryManager.setMemoryValue(memoryManager.getRegisterAddress("%eax"), eax);
+
+        IPHelper.IncrementIP(memoryManager);
+
         return 0;
     }
 
