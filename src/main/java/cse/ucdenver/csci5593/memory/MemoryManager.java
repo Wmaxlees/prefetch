@@ -34,7 +34,7 @@ public class MemoryManager {
     public void setRegisterMemoryModule(RegisterMemoryModule rmm) {
         this.registers = rmm;
 
-        for (int i = 0; i < this.registers.getMaxRegisterIndex(); ++i) {
+        for (int i = 0; i <= this.registers.getMaxRegisterIndex(); ++i) {
             this.setMemoryValue(i, 0);
         }
 
@@ -137,6 +137,7 @@ public class MemoryManager {
     public MemoryReturn getMemoryValue(int address) throws AddressNotFoundException {
         MemoryReturn result = new MemoryReturn();
 
+        System.out.println("Memory-----");
         System.out.println(this.values);
 
         if (this.values.containsKey(address)) {

@@ -35,7 +35,7 @@ public class InstRet extends Instruction {
         return 0;
     }
 
-    static {
+    public static void load() {
         X86InstructionSet.RegisterInstruction(InstRet.class, "RET");
     }
 }

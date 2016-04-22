@@ -25,7 +25,7 @@ public class App
         X86InstructionSet.loadInstructions();
 
         Parser parser = new Parser(new X86InstructionSet());
-        HashMap<Integer, Instruction> inst = parser.parseFile("test.s");
+        HashMap<Integer, Instruction> inst = parser.parseFile("resources/test.s");
 
         MemoryManager mm = new MemoryManager(4);
         mm.setRegisterMemoryModule(new X86RegisterMemory());

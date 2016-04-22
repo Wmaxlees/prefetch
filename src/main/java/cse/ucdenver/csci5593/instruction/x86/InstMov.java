@@ -51,6 +51,9 @@ public class InstMov extends Instruction {
         addrA = this.getOperand(0).getValue(memoryManager);
         addrB = this.getOperand(1).getValue(memoryManager);
 
+        System.out.println("Address A: " + addrA);
+        System.out.println("Address B: " + addrB);
+
         memoryManager.setMemoryValue(addrA, memoryManager.getMemoryValue(addrB).value);
 
         return 0;

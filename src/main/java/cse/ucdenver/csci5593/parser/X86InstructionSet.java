@@ -86,13 +86,16 @@ public class X86InstructionSet implements InstructionSet {
         try {
             inst = instClass.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            System.err.print("Error instantiating instance of instruction class");
+            System.out.print("Error instantiating instance of instruction class");
             return null;
         }
 
         for (int i = 1; i+offset < tokens.length; ++i) {
             inst.addOperand(this.parseOperand(tokens[offset+i]));
         }
+        instructions.put(index++, inst);
+
+        System.out.println(inst);
 
         if (pointerIndex != -1) {
             // Store the pointer value from the reg
@@ -271,6 +274,7 @@ public class X86InstructionSet implements InstructionSet {
         InstOr.load();
         InstPop.load();
         InstPush.load();
+        InstRet.load();
         InstSub.load();
         InstXor.load();
     }

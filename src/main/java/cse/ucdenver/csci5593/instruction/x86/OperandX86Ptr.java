@@ -58,21 +58,19 @@ public class OperandX86Ptr implements Operand {
         int offset = 0;
         String val = "";
 
-        System.out.println(this.token);
-
         if (!token.startsWith("(")) {
             String[] tokens = token.split("\\(");
-            System.out.println(tokens[0]);
             offset = Integer.parseInt(tokens[0]);
-
-            System.out.println(tokens[1]);
-
             val = "(" + tokens[1];
         }
 
         val = val.substring(1, val.length()-1);
 
         return memoryManager.getMemoryValue(memoryManager.getRegisterAddress(val)).value + offset;
+    }
+
+    public String toString() {
+        return ("(" + this.flag + ": " + this.token +")");
     }
 
     private OperandFlag flag;

@@ -76,6 +76,17 @@ public abstract class Instruction {
         }
     }
 
+    @Override
+    public String toString() {
+        String result = this.opCode();
+
+        for (Operand op : this.operands) {
+            result += " " + op;
+        }
+
+        return result;
+    }
+
     public void throwException(String message) throws BadlyFormattedInstructionException {
         throw new BadlyFormattedInstructionException(this.opCode() + ": " + message);
     }

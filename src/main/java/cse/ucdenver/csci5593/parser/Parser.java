@@ -45,6 +45,9 @@ public class Parser {
                 String[] splitLine = line.split("[\\t ]+");
 
                 HashMap<Integer, Instruction> inst = this.instSet.generateInstructions(splitLine, instructionIndex);
+
+                System.out.println("Adding: " + inst);
+
                 if (inst != null) {
                     instructionIndex += inst.size();
                     result.putAll(inst);
@@ -55,6 +58,8 @@ public class Parser {
         } catch (IOException e) {
             System.err.print("Error reading parse file: " + e);
         }
+
+        System.out.println(result);
 
         return result;
     }

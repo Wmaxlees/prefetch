@@ -49,6 +49,11 @@ public class OperandX86 implements Operand {
         return this.flag.equals(flag);
     }
 
+    @Override
+    public String toString() {
+        return ("(" + this.flag + ": " + this.value +")");
+    }
+
     private OperandFlag flag;
     private int value;
 }
