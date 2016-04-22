@@ -35,11 +35,6 @@ public class InstRet extends Instruction {
         return 0;
     }
 
-    private int operand(int i) {
-
-        return 0;
-    }
-
     static {
         X86InstructionSet.RegisterInstruction(InstRet.class, "RET");
     }
