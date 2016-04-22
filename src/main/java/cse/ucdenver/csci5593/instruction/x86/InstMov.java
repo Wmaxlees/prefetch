@@ -22,15 +22,8 @@ public class InstMov extends Instruction {
 
         if (this.getOperand(0).isType(OperandFlag.literal)) {
             return result;
-        }
-
-        if (this.getOperand(0).isType(OperandFlag.pointer)) {
-            int effectiveAddress = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value +
-                    this.getOperand(0).getOffset();
-
-            result += memoryManager.getMemoryValue(effectiveAddress).accessTime;
         } else {
-            result += memoryManager.getMemoryValue(this.getOperand(0).getValue()).accessTime;
+            result += memoryManager.getMemoryValue(this.getOperand(0).getValue(memoryManager)).accessTime;
         }
 
         IPHelper.IncrementIP(memoryManager);
@@ -55,26 +48,15 @@ public class InstMov extends Instruction {
 
         int addrA = 0, addrB = 0;
 
-        if (this.getOperand(0).isType(OperandFlag.pointer)) {
-            addrA = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value +
-                    this.getOperand(0).getOffset();
-        } else {
-            addrA = this.getOperand(0).getValue();
-        }
-
-        if (this.getOperand(1).isType(OperandFlag.pointer)) {
-            addrB = memoryManager.getMemoryValue(this.getOperand(1).getValue()).value +
-                    this.getOperand(1).getOffset();
-        } else {
-            addrB = this.getOperand(1).getValue();
-        }
+        addrA = this.getOperand(0).getValue(memoryManager);
+        addrB = this.getOperand(1).getValue(memoryManager);
 
         memoryManager.setMemoryValue(addrA, memoryManager.getMemoryValue(addrB).value);
 
         return 0;
     }
 
-    static {
+    public static void load() {
         X86InstructionSet.RegisterInstruction(InstMov.class, "MOV");
         X86InstructionSet.RegisterInstruction(InstMov.class, "MOVL");
     }

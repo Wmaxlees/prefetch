@@ -17,6 +17,7 @@ public interface Core {
      */
     void setInstruction(HashMap<Integer, Instruction> list);
     boolean update();
+    void initialize();
     int getRuntime();
     void setMemoryManager(MemoryManager mm);
 }

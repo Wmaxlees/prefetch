@@ -2,6 +2,7 @@ package cse.ucdenver.csci5593.instruction.x86;
 
 import cse.ucdenver.csci5593.instruction.Operand;
 import cse.ucdenver.csci5593.instruction.OperandFlag;
+import cse.ucdenver.csci5593.memory.MemoryManager;
 
 /**
  * Created by max on 4/7/16.
@@ -34,13 +35,13 @@ public class OperandX86 implements Operand {
      * @return The value
      */
     @Override
-    public int getValue() {
+    public int getValue(MemoryManager memoryManager) {
         return this.value;
     }
 
     @Override
-    public int getOffset() {
-        return 0;
+    public void setValue(int value) {
+        this.value = value;
     }
 
     @Override

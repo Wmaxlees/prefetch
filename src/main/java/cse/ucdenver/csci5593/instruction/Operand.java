@@ -1,5 +1,7 @@
 package cse.ucdenver.csci5593.instruction;
 
+import cse.ucdenver.csci5593.memory.MemoryManager;
+
 /**
  * Created by max on 4/7/16.
  */
@@ -11,17 +13,18 @@ public interface Operand {
     OperandFlag getFlag();
 
     /**
+     * Get the value of the operand
      *
+     * @param memoryManager The memory manager (only used for pointers)
      * @return The actual value of the operand
      */
-    int getValue();
+    int getValue(MemoryManager memoryManager);
 
     /**
-     * Only applicable for pointers
-     *
-     * @return The offset of the pointer
+     * Set the value of the operand. Should only be used during parsing
+     * @param value The value to set the operand to
      */
-    int getOffset();
+    void setValue(int value);
 
     /**
      *

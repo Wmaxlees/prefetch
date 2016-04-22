@@ -24,8 +24,8 @@ public class InstDiv extends Instruction {
         int edx = memoryManager.getMemoryValue(7).value;
         int divisor = (edx << 32 | eax);
 
-        int quotient = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value / divisor;
-        int remainder = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value % divisor;
+        int quotient = memoryManager.getMemoryValue(this.getOperand(0).getValue(memoryManager)).value / divisor;
+        int remainder = memoryManager.getMemoryValue(this.getOperand(0).getValue(memoryManager)).value % divisor;
 
         memoryManager.setMemoryValue(memoryManager.getRegisterAddress("%edx"), remainder);
         memoryManager.setMemoryValue(memoryManager.getRegisterAddress("%eax"), quotient);
@@ -35,7 +35,7 @@ public class InstDiv extends Instruction {
         return 0;
     }
 
-    static {
+    public static void load() {
         X86InstructionSet.RegisterInstruction(InstDiv.class, "DIV");
         X86InstructionSet.RegisterInstruction(InstDiv.class, "DIVL");
     }

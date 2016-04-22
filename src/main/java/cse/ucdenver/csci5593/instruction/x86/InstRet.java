@@ -25,10 +25,10 @@ public class InstRet extends Instruction {
         }
 
         int result = memoryManager.getMemoryValue(memoryManager.getRegisterAddress("%cs")).value;
-        int a = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value;
+        int a = memoryManager.getMemoryValue(this.getOperand(0).getValue(memoryManager)).value;
         if (operand && this.operands.size() != 0) {
             int sp = memoryManager.getMemoryValue(memoryManager.getRegisterAddress("%esp")).value;
-            sp -= this.getOperand(0).getValue();
+            sp -= a;
             memoryManager.setMemoryValue(memoryManager.getRegisterAddress("%esp"), sp);
         }
         IPHelper.setIP(memoryManager, result);
