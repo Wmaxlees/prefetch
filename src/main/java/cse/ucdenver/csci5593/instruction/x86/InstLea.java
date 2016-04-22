@@ -17,16 +17,16 @@ public class InstLea extends Instruction {
     }
 
     public int execute(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
-        
+
         if ((this.operands != null) && this.operands.size() != 1) {
             throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
         }
         if (this.getOperand(0).getFlag() != OperandFlag.pointer) {
             throw new BadlyFormattedInstructionException(this.opCode() + "the operand is not a pointer");
         }
-        
-        int result = this.getOperand(0).getValue();
-        memoryManager.setMemoryValue(this.getOperand(1).getValue(), result);
+
+        int result = this.getOperand(0).getValue(memoryManager);
+        memoryManager.setMemoryValue(this.getOperand(1).getValue(memoryManager), result);
         IPHelper.IncrementIP(memoryManager);
         return 0;
     }
