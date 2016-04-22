@@ -151,4 +151,10 @@ public class MemoryManager {
 
         return result;
     }
+    
+    // return the same values for modules for HelperMemoryManager
+    HelperMemoryManager GenerateHelper()
+	{
+		return new HelperMemoryManager(values, modules);
+	}
 }
