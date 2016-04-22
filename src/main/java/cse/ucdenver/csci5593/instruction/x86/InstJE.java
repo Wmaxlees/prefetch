@@ -26,7 +26,7 @@ public class InstJE extends Instruction {
         }
 
         if (memoryManager.getFlagStatus(RegisterMemoryModule.Flag.ZERO_FLAG)) {
-            IPHelper.setIP(memoryManager, this.operands.get(0).getValue());
+            IPHelper.setIP(memoryManager, this.operands.get(0).getValue(memoryManager));
         } else {
             IPHelper.IncrementIP(memoryManager);
         }
@@ -34,7 +34,7 @@ public class InstJE extends Instruction {
         return 0;
     }
 
-    static {
+    public static void load() {
         X86InstructionSet.RegisterInstruction(InstJE.class, "JE");
         X86InstructionSet.RegisterInstruction(InstJE.class, "JZ");
     }

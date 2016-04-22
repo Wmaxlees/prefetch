@@ -32,7 +32,7 @@ public class InstPush extends Instruction {
         }
 
         int stackAddress = memoryManager.getMemoryValue(10).value;     // Stack
-        int value = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value;
+        int value = memoryManager.getMemoryValue(this.getOperand(0).getValue(memoryManager)).value;
 
         memoryManager.setMemoryValue(stackAddress, value);
         memoryManager.setMemoryValue(10, stackAddress + 1);
@@ -42,7 +42,7 @@ public class InstPush extends Instruction {
         return 0;
     }
 
-    static {
+    public static void load() {
         X86InstructionSet.RegisterInstruction(InstPush.class, "PUSH");
         X86InstructionSet.RegisterInstruction(InstPush.class, "PUSHL");
     }

@@ -27,7 +27,7 @@ public class X86RegisterMemory implements RegisterMemoryModule {
         if (flags.containsKey(name)) {
             return flags.get(name);
         } else {
-            throw new AddressNotFoundException();
+            throw new AddressNotFoundException(name.toString());
         }
     }
 
@@ -36,7 +36,7 @@ public class X86RegisterMemory implements RegisterMemoryModule {
         if (flags.containsKey(name)) {
             flags.replace(name, true);
         } else {
-            throw new AddressNotFoundException();
+            throw new AddressNotFoundException(name.toString());
         }
     }
 
@@ -45,7 +45,7 @@ public class X86RegisterMemory implements RegisterMemoryModule {
         if (flags.containsKey(name)) {
             flags.replace(name, false);
         } else {
-            throw new AddressNotFoundException();
+            throw new AddressNotFoundException(name.toString());
         }
     }
 
@@ -88,14 +88,16 @@ public class X86RegisterMemory implements RegisterMemoryModule {
                 return 17;
             case "%flags":           // 18
                 return 18;
+            case "%gs":              // 19
+                return 19;
             default:
-                throw new AddressNotFoundException();
+                throw new AddressNotFoundException(name.toString());
         }
     }
 
     @Override
     public int getMaxRegisterIndex() {
-        return 18;
+        return 19;
     }
 
     @Override

@@ -21,7 +21,8 @@ public class InstMul extends Instruction {
             throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
         }
         int eax = memoryManager.getMemoryValue(1).value;
-        int result = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value * eax;
+
+        int result = memoryManager.getMemoryValue(this.getOperand(0).getValue(memoryManager)).value * eax;
 
         int edx = result >> 32;
         eax = result ^ (edx << 32);
@@ -41,7 +42,7 @@ public class InstMul extends Instruction {
         return 0;
     }
 
-    static {
+    public static void load() {
         X86InstructionSet.RegisterInstruction(InstMul.class, "MUL");
         X86InstructionSet.RegisterInstruction(InstMul.class, "MULL");
     }

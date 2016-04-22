@@ -26,11 +26,11 @@ public class InstJMP extends Instruction {
 			throw new BadlyFormattedInstructionException(this.opCode()+" Incorrect number of arguments for JMP.");
 	}
 		
-	    IPHelper.setIP(memoryManager, this.operands.get(0).getValue());
+	    IPHelper.setIP(memoryManager, this.operands.get(0).getValue(memoryManager));
 	    return 0;
 	}
 
-	static {
+	public static void load() {
 		X86InstructionSet.RegisterInstruction(InstJMP.class, "JMP");
 	}
 }

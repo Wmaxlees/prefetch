@@ -36,7 +36,7 @@ public class InstPop extends Instruction {
         int stackPointer = memoryManager.getMemoryValue(10).value;
         int value = memoryManager.getMemoryValue(stackPointer).value;
 
-        memoryManager.setMemoryValue(this.getOperand(0).getValue(), value);
+        memoryManager.setMemoryValue(this.getOperand(0).getValue(memoryManager), value);
         memoryManager.setMemoryValue(10, stackPointer-1);
 
         IPHelper.IncrementIP(memoryManager);
@@ -44,7 +44,7 @@ public class InstPop extends Instruction {
         return 0;
     }
 
-    static {
+    public static void load() {
         X86InstructionSet.RegisterInstruction(InstPop.class, "POP");
         X86InstructionSet.RegisterInstruction(InstPop.class, "POPL");
     }

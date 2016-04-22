@@ -23,10 +23,10 @@ public class InstAdd extends Instruction {
             throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
         }
 
-        long result = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value +
-                     memoryManager.getMemoryValue(this.getOperand(1).getValue()).value;
+        long result = memoryManager.getMemoryValue(this.getOperand(0).getValue(memoryManager)).value +
+                     memoryManager.getMemoryValue(this.getOperand(1).getValue(memoryManager)).value;
 
-        memoryManager.setMemoryValue(this.getOperand(0).getValue(), (int)result);
+        memoryManager.setMemoryValue(this.getOperand(0).getValue(memoryManager), (int)result);
 
         this.setFlags(memoryManager, result);
 
@@ -58,7 +58,7 @@ public class InstAdd extends Instruction {
         }
     }
 
-    static {
+    public static void load() {
         X86InstructionSet.RegisterInstruction(InstAdd.class, "ADD");
         X86InstructionSet.RegisterInstruction(InstAdd.class, "ADDL");
     }

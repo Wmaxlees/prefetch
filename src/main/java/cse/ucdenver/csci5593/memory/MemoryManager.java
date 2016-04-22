@@ -21,8 +21,8 @@ public class MemoryManager {
     /**
      * Create a new instance of the MemoryManager
      */
-    public MemoryManager() {
-        this.modules = new ArrayList<>();
+    public MemoryManager(int slots) {
+        this.modules = new ArrayList<>(slots);
         this.values = new HashMap<>();
     }
 
@@ -33,6 +33,12 @@ public class MemoryManager {
      */
     public void setRegisterMemoryModule(RegisterMemoryModule rmm) {
         this.registers = rmm;
+
+        for (int i = 0; i < this.registers.getMaxRegisterIndex(); ++i) {
+            this.setMemoryValue(i, 0);
+        }
+
+        this.setMemoryValue(this.registers.getRegisterAddress("%esp"), 10000);
         this.setMemoryValue(this.registers.getRegisterAddress("%ip"), this.registers.getMaxRegisterIndex() + 1);
     }
 
@@ -83,16 +89,19 @@ public class MemoryManager {
      * existing module
      */
     public boolean addModule(int index, MemoryModule module) throws IndexOutOfBoundsException {
-        boolean result = (this.modules.get(index) != null);
+        if (!(index < modules.size())) {
+            return false;
+        }
         this.modules.set(index, module);
-        return result;
+        return true;
     }
 
     public void update() {
         this.registers.update();
 
-        for (MemoryModule module : modules) {
-            module.update();
+        for (MemoryModule module : this.modules) {
+            if (module != null)
+                module.update();
         }
     }
 
@@ -128,10 +137,12 @@ public class MemoryManager {
     public MemoryReturn getMemoryValue(int address) throws AddressNotFoundException {
         MemoryReturn result = new MemoryReturn();
 
+        System.out.println(this.values);
+
         if (this.values.containsKey(address)) {
             result.value = this.values.get(address);
         } else {
-            throw new AddressNotFoundException();
+            throw new AddressNotFoundException(String.valueOf(address));
         }
 
         int accum = 0;
