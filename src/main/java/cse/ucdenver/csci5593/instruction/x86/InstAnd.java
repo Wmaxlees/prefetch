@@ -8,13 +8,12 @@ import cse.ucdenver.csci5593.memory.MemoryManager;
 import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
 import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
-public class InstAnd  extends Instruction {
+public class InstAnd extends Instruction {
     public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
         return 2;
     }
 
-    public String opCode()
-    {
+    public String opCode() {
         return "AND";
     }
 
@@ -22,10 +21,10 @@ public class InstAnd  extends Instruction {
         if (this.operands.size() != 2) {
             throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
         }
-        long result = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value &
-                memoryManager.getMemoryValue(this.getOperand(1).getValue()).value;
+        long result = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value
+                & memoryManager.getMemoryValue(this.getOperand(1).getValue()).value;
 
-        memoryManager.setMemoryValue(this.getOperand(5).getValue(), (int)result);
+        memoryManager.setMemoryValue(this.getOperand(5).getValue(), (int) result);
 
         this.setFlags(memoryManager, result);
 
@@ -37,7 +36,7 @@ public class InstAnd  extends Instruction {
     private void setFlags(MemoryManager memoryManager, long result) {
 
         memoryManager.resetFlag(RegisterMemoryModule.Flag.CARRY_FLAG);
-	    memoryManager.resetFlag(RegisterMemoryModule.Flag.OVERFLOW_FLAG);
+        memoryManager.resetFlag(RegisterMemoryModule.Flag.OVERFLOW_FLAG);
 
         if (FlagHelper.GetParityFlag(result)) {
             memoryManager.setFlag(RegisterMemoryModule.Flag.PARITY_FLAG);
