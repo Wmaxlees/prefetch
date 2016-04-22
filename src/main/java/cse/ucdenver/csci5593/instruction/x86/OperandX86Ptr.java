@@ -2,6 +2,7 @@ package cse.ucdenver.csci5593.instruction.x86;
 
 import cse.ucdenver.csci5593.instruction.Operand;
 import cse.ucdenver.csci5593.instruction.OperandFlag;
+import cse.ucdenver.csci5593.memory.MemoryManager;
 
 /**
  * Created by max on 4/7/16.
@@ -14,7 +15,7 @@ public class OperandX86Ptr implements Operand {
      */
     public OperandX86Ptr(String value) {
         this.flag = OperandFlag.pointer;
-        this.dereference(value);
+        this.token = value;
     }
 
     /**
@@ -33,13 +34,13 @@ public class OperandX86Ptr implements Operand {
      * @return The value
      */
     @Override
-    public int getValue() {
-        return this.value;
+    public int getValue(MemoryManager memoryManager) {
+        return this.dereference(memoryManager);
     }
 
     @Override
-    public int getOffset() {
-        return offset;
+    public void setValue(int value) {
+        System.err.println("Attempting to set value of pointer");
     }
 
     @Override
@@ -50,25 +51,30 @@ public class OperandX86Ptr implements Operand {
     /**
      * Get rid of the pointer symbol
      *
-     * @param token The token to remove the pointer from
+     * @param memoryManager The memory manager of the executing thread
      * @return A string that's the value
      */
-    private void dereference(String token) {
-        String val = token;
+    private int dereference(MemoryManager memoryManager) {
+        int offset = 0;
+        String val = "";
+
+        System.out.println(this.token);
 
         if (!token.startsWith("(")) {
-            String[] tokens = val.split("\\(");
-            this.offset = Integer.getInteger(tokens[0]);
+            String[] tokens = token.split("\\(");
+            System.out.println(tokens[0]);
+            offset = Integer.parseInt(tokens[0]);
+
+            System.out.println(tokens[1]);
 
             val = "(" + tokens[1];
         }
 
-        val = val.substring(1, val.length()-2);
+        val = val.substring(1, val.length()-1);
 
-        this.value = Integer.getInteger(val);
+        return memoryManager.getMemoryValue(memoryManager.getRegisterAddress(val)).value + offset;
     }
 
     private OperandFlag flag;
-    private int value;
-    private int offset;
+    private String token;
 }

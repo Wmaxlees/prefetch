@@ -24,13 +24,15 @@ public class BasicCoreImpl implements Core
 	// Update the current cycle by adding one each time
 	// Updating the current Instruction cycle by subtracting one each time and check it if it is zero or not 
 	public boolean update()
-	{
+    {
 		++this.currentCycle;
 		--this.currentInstCycle;
 		if (this.currentInstCycle == 0)
 		{
 			this.currentInst.execute(this.mm);
 			this.currentInst = inst.get(mm.getMemoryValue(mm.getRegisterAddress("%ip")));
+            System.out.println("Executing: " + this.currentInst.opCode());
+            this.currentInstCycle = this.currentInst.CPI(mm);
             if (this.currentInst == null) {
                 return false;
             }
@@ -48,4 +50,14 @@ public class BasicCoreImpl implements Core
 	public void setMemoryManager(MemoryManager mm) {
 		this.mm = mm;
 	}
+
+    public void initialize() {
+        this.currentCycle = 0;
+
+        this.currentInst = this.inst.get(mm.getMemoryValue(mm.getRegisterAddress("%ip")).value);
+        System.out.println(this.currentInst.opCode());
+        System.out.println(this.currentInst.getOperand(0).getFlag().toString());
+        System.out.println(this.currentInst.getOperand(1));
+        this.currentInstCycle = this.currentInst.CPI(mm);
+    }
 }

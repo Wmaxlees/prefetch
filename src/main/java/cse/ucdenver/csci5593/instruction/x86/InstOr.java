@@ -2,6 +2,7 @@ package cse.ucdenver.csci5593.instruction.x86;
 
 import cse.ucdenver.csci5593.instruction.BadlyFormattedInstructionException;
 import cse.ucdenver.csci5593.instruction.Instruction;
+import cse.ucdenver.csci5593.instruction.OperandFlag;
 import cse.ucdenver.csci5593.instruction.x86.helpers.FlagHelper;
 import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
@@ -21,10 +22,10 @@ public class InstOr extends Instruction {
         if (this.operands.size() != 2) {
             throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
         }
-        long result = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value |
-                memoryManager.getMemoryValue(this.getOperand(1).getValue()).value;
+        long result = memoryManager.getMemoryValue(this.getOperand(0).getValue(memoryManager)).value |
+                memoryManager.getMemoryValue(this.getOperand(1).getValue(memoryManager)).value;
 
-        memoryManager.setMemoryValue(this.getOperand(5).getValue(), (int) result);
+        memoryManager.setMemoryValue(this.getOperand(5).getValue(memoryManager), (int) result);
 
         this.setFlags(memoryManager, result);
 
@@ -56,7 +57,7 @@ public class InstOr extends Instruction {
         }
     }
 
-    static {
+    public static void load() {
         X86InstructionSet.RegisterInstruction(InstOr.class, "OR");
         X86InstructionSet.RegisterInstruction(InstOr.class, "ORL");
     }
