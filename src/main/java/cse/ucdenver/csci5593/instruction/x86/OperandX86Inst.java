@@ -55,5 +55,10 @@ public class OperandX86Inst implements Operand {
         return OperandFlag.instruction;
     }
 
+    @Override
+    public String toString() {
+        return "(instruction: " + this.inst + ")";
+    }
+
     Instruction inst;
 }

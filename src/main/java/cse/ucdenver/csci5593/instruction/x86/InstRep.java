@@ -13,7 +13,7 @@ public class InstRep extends Instruction {
 
     @Override
     public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
-        return 0;
+        return 1;
     }
 
     @Override
@@ -34,6 +34,8 @@ public class InstRep extends Instruction {
             return 0;
         } else {
             memoryManager.setRegisterValue("%ecx", ecx - 1);
+            // Reverse the incrementation done by the instruction
+            IPHelper.DecrementIP(memoryManager);
         }
 
         this.getOperand(0).getValue(memoryManager);

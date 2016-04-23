@@ -7,7 +7,11 @@ import cse.ucdenver.csci5593.memory.MemoryManager;
  */
 public class IPHelper {
     public static final void IncrementIP(MemoryManager mm) {
-        IPHelper.setIP(mm, mm.getRegisterValue("%ip") + 1);
+        mm.setRegisterValue("%ip", mm.getRegisterValue("%ip") + 1);
+    }
+
+    public static final void DecrementIP(MemoryManager mm) {
+        mm.setRegisterValue("%ip", mm.getRegisterValue("%ip") - 1);
     }
 
     public static final void setIP(MemoryManager mm, int value) {
