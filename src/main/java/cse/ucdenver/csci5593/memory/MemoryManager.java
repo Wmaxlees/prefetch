@@ -4,6 +4,7 @@ import cse.ucdenver.csci5593.memory.exceptions.AddressNotFoundException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -127,6 +128,20 @@ public class MemoryManager {
     }
 
     /**
+     * Get the value of a named register
+     *
+     * @param regName The name of the register
+     * @return The value of the register
+     */
+    public int getRegisterValue(String regName) {
+        return this.getMemoryValue(this.getRegisterAddress(regName)).value;
+    }
+
+    public void setRegisterValue(String regName, int value) {
+        this.setMemoryValue(this.getRegisterAddress(regName), value);
+    }
+
+    /**
      * Get the value of a given memory address
      *
      * @param address The address to access
@@ -137,13 +152,13 @@ public class MemoryManager {
     public MemoryReturn getMemoryValue(int address) throws AddressNotFoundException {
         MemoryReturn result = new MemoryReturn();
 
-        System.out.println("Memory-----");
-        System.out.println(this.values);
-
         if (this.values.containsKey(address)) {
             result.value = this.values.get(address);
         } else {
-            throw new AddressNotFoundException(String.valueOf(address));
+            int dirtyMemory = (int)Math.random()*100000;
+            this.values.put(address, dirtyMemory);
+            result.value = dirtyMemory;
+            System.out.println("Accessing memory that has not been initialized");
         }
 
         int accum = 0;
@@ -159,6 +174,20 @@ public class MemoryManager {
                 result.accessTime = accum + module.accessTime();
                 break;
             }
+        }
+
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        String result = "MEMORY\n---------------------------\n";
+
+        Iterator it = this.values.entrySet().iterator();
+
+        while(it.hasNext()) {
+            HashMap.Entry entry = (HashMap.Entry)it.next();
+            result += entry.getKey() + " : " + entry.getValue() + "\n";
         }
 
         return result;

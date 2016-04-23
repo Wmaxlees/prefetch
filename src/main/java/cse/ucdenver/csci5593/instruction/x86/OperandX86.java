@@ -36,6 +36,19 @@ public class OperandX86 implements Operand {
      */
     @Override
     public int getValue(MemoryManager memoryManager) {
+        switch (this.getFlag()) {
+            case literal:
+                return this.value;
+            default:
+                return memoryManager.getMemoryValue(this.value).value;
+        }
+    }
+
+    public int getAddress(MemoryManager memoryManager) {
+        if (this.getFlag() == OperandFlag.literal) {
+            throw new RuntimeException("Attempting to access address of a literal");
+        }
+
         return this.value;
     }
 

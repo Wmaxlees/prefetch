@@ -14,7 +14,7 @@ public class InstMov extends Instruction {
 
     @Override
     public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
-        int result = 0;
+        int result = 1;
 
         if (this.operands.size() != 2) {
             this.throwException("Incorrect number of arguments.");
@@ -25,8 +25,6 @@ public class InstMov extends Instruction {
         } else {
             result += memoryManager.getMemoryValue(this.getOperand(0).getValue(memoryManager)).accessTime;
         }
-
-        IPHelper.IncrementIP(memoryManager);
 
         return result;
     }
@@ -46,15 +44,9 @@ public class InstMov extends Instruction {
             this.throwException("Second operand cannot be a constant.");
         }
 
-        int addrA = 0, addrB = 0;
+        memoryManager.setMemoryValue(this.getOperand(1).getAddress(memoryManager), this.getOperand(0).getValue(memoryManager));
 
-        addrA = this.getOperand(0).getValue(memoryManager);
-        addrB = this.getOperand(1).getValue(memoryManager);
-
-        System.out.println("Address A: " + addrA);
-        System.out.println("Address B: " + addrB);
-
-        memoryManager.setMemoryValue(addrA, memoryManager.getMemoryValue(addrB).value);
+        IPHelper.IncrementIP(memoryManager);
 
         return 0;
     }

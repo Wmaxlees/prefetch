@@ -4,6 +4,9 @@ import cse.ucdenver.csci5593.instruction.Operand;
 import cse.ucdenver.csci5593.instruction.OperandFlag;
 import cse.ucdenver.csci5593.memory.MemoryManager;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by max on 4/7/16.
  */
@@ -35,7 +38,7 @@ public class OperandX86Ptr implements Operand {
      */
     @Override
     public int getValue(MemoryManager memoryManager) {
-        return this.dereference(memoryManager);
+        return memoryManager.getMemoryValue(this.getAddress(memoryManager)).value;
     }
 
     @Override
@@ -55,18 +58,31 @@ public class OperandX86Ptr implements Operand {
      * @return A string that's the value
      */
     private int dereference(MemoryManager memoryManager) {
+        Pattern pattern = Pattern.compile("[-+]*[0-9]*\\(%[a-zA-Z]+\\)");
+        Matcher matcher = pattern.matcher(this.token);
+
         int offset = 0;
         String val = "";
 
-        if (!token.startsWith("(")) {
-            String[] tokens = token.split("\\(");
-            offset = Integer.parseInt(tokens[0]);
-            val = "(" + tokens[1];
+        if (matcher.matches()) {
+            if (!token.startsWith("(")) {
+                String[] tokens = token.split("\\(");
+                offset = Integer.parseInt(tokens[0]);
+                val = "(" + tokens[1];
+            }
+
+            val = val.substring(1, val.length()-1);
+        } else {
+            String[] tokens = token.split(":");
+            val = tokens[0];
+            offset = Integer.parseInt(tokens[1]);
         }
 
-        val = val.substring(1, val.length()-1);
+        return memoryManager.getRegisterValue(val) + offset;
+    }
 
-        return memoryManager.getMemoryValue(memoryManager.getRegisterAddress(val)).value + offset;
+    public int getAddress(MemoryManager memoryManager) {
+        return this.dereference(memoryManager);
     }
 
     public String toString() {

@@ -20,15 +20,14 @@ public class InstDiv extends Instruction {
             throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
         }
 
-        int eax = memoryManager.getMemoryValue(1).value;
-        int edx = memoryManager.getMemoryValue(7).value;
-        int divisor = (edx << 32 | eax);
+        int divisor = (memoryManager.getRegisterValue("%edx") << 32 | memoryManager.getRegisterValue("%eax"));
+        int operand = this.getOperand(0).getValue(memoryManager);
 
-        int quotient = memoryManager.getMemoryValue(this.getOperand(0).getValue(memoryManager)).value / divisor;
-        int remainder = memoryManager.getMemoryValue(this.getOperand(0).getValue(memoryManager)).value % divisor;
+        int quotient = operand / divisor;
+        int remainder = operand % divisor;
 
-        memoryManager.setMemoryValue(memoryManager.getRegisterAddress("%edx"), remainder);
-        memoryManager.setMemoryValue(memoryManager.getRegisterAddress("%eax"), quotient);
+        memoryManager.setRegisterValue("%eax", quotient);
+        memoryManager.setRegisterValue("%edx", remainder);
 
         IPHelper.IncrementIP(memoryManager);
 

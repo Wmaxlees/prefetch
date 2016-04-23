@@ -13,8 +13,7 @@ import cse.ucdenver.csci5593.parser.X86InstructionSet;
 public class InstPush extends Instruction {
     @Override
     public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
-
-        return 0;
+        return 1;
     }
 
     @Override
@@ -27,12 +26,12 @@ public class InstPush extends Instruction {
         if (this.operands.size() != 1) {
             this.throwException("Wrong number of operands");
         }
-        if (!this.getOperand(0).isType(OperandFlag.register)) {
+        if (!this.getOperand(0).isType(OperandFlag.register) && !this.getOperand(0).isType(OperandFlag.pointer)) {
             this.throwException("Operand not register");
         }
 
-        int stackAddress = memoryManager.getMemoryValue(10).value;     // Stack
-        int value = memoryManager.getMemoryValue(this.getOperand(0).getValue(memoryManager)).value;
+        int stackAddress = memoryManager.getRegisterValue("%esp");     // Stack
+        int value = this.getOperand(0).getValue(memoryManager);
 
         memoryManager.setMemoryValue(stackAddress, value);
         memoryManager.setMemoryValue(10, stackAddress + 1);

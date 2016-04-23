@@ -33,11 +33,11 @@ public class InstPop extends Instruction {
             this.throwException("Operand is not a register");
         }
 
-        int stackPointer = memoryManager.getMemoryValue(10).value;
+        int stackPointer = memoryManager.getRegisterValue("%esp");
         int value = memoryManager.getMemoryValue(stackPointer).value;
 
-        memoryManager.setMemoryValue(this.getOperand(0).getValue(memoryManager), value);
-        memoryManager.setMemoryValue(10, stackPointer-1);
+        memoryManager.setMemoryValue(this.getOperand(0).getAddress(memoryManager), value);
+        memoryManager.setRegisterValue("%esp", stackPointer-1);
 
         IPHelper.IncrementIP(memoryManager);
 

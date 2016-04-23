@@ -7,10 +7,7 @@ import cse.ucdenver.csci5593.instruction.x86.*;
 import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
 import cse.ucdenver.csci5593.memory.X86RegisterMemory;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,9 +31,11 @@ public class X86InstructionSet implements InstructionSet {
     }
 
     public void addLabel(String label, int address) {
-        OperandX86 op = this.labels.get(label);
+        String key = label.substring(0, label.length()-1);
+        OperandX86 op = this.labels.get(key);
         if (op == null) {
-            this.labels.put(label, new OperandX86(OperandFlag.address, address));
+            this.labels.put(key, new OperandX86(OperandFlag.literal, address));
+            System.out.println(this.labels);
         } else {
             op.setValue(address);
         }
@@ -51,26 +50,6 @@ public class X86InstructionSet implements InstructionSet {
         if (this.isLabel(tokens[0])) {
             this.addLabel(tokens[0], index);
             offset = 1;
-        }
-
-        // Check operands first for necessary pointer loads
-        int pointerIndex = -1;
-        for (int i = 1; i+offset < tokens.length; ++i) {
-            if (this.isPointer(tokens[offset+i])) {
-                if (pointerIndex != -1) {
-                    throw new ParserException("Can't have two pointers in single command");
-                }
-                pointerIndex = i;
-
-                Instruction pushInst = new InstPush();
-                pushInst.addOperand(new OperandX86(OperandFlag.register, this.registers.getRegisterAddress("%ebx")));
-
-                // Load the pointer value into a reg
-                Instruction loadInst = new InstMov();
-                loadInst.addOperand(new OperandX86Ptr(tokens[offset+i]));
-                loadInst.addOperand(new OperandX86(OperandFlag.register, this.registers.getRegisterAddress("%ebx")));
-                instructions.put(index++, loadInst);
-            }
         }
 
         tokens[offset] = tokens[offset].trim();
@@ -96,18 +75,6 @@ public class X86InstructionSet implements InstructionSet {
         instructions.put(index++, inst);
 
         System.out.println(inst);
-
-        if (pointerIndex != -1) {
-            // Store the pointer value from the reg
-            Instruction storeInst = new InstMov();
-            storeInst.addOperand(new OperandX86(OperandFlag.register, this.registers.getRegisterAddress("%ebx")));
-            storeInst.addOperand(new OperandX86Ptr(tokens[offset+pointerIndex]));
-            instructions.put(index++, storeInst);
-
-            Instruction popInst = new InstPop();
-            popInst.addOperand(new OperandX86(OperandFlag.register, this.registers.getRegisterAddress("%ebx")));
-            instructions.put(index++, popInst);
-        }
 
         return instructions;
     }
@@ -137,7 +104,7 @@ public class X86InstructionSet implements InstructionSet {
         } else if (this.isLabel(token)) {
             OperandX86 op = this.labels.get(token);
             if (op == null) {
-                op = new OperandX86(OperandFlag.address, 0);
+                op = new OperandX86(OperandFlag.literal, 0);
                 this.labels.put(token, op);
             }
             operand = this.labels.get(token);
@@ -268,7 +235,8 @@ public class X86InstructionSet implements InstructionSet {
         InstAnd.load();
         InstDiv.load();
         InstJE.load();
-        InstJMP.load();
+        InstJmp.load();
+        InstLea.load();
         InstMov.load();
         InstMul.load();
         InstOr.load();

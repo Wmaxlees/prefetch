@@ -52,6 +52,8 @@ public class Parser {
                     instructionIndex += inst.size();
                     result.putAll(inst);
                 }
+
+                System.out.println("\n\n");
             }
         } catch (FileNotFoundException e) {
             System.err.print("Parse file not found: " + filename);
