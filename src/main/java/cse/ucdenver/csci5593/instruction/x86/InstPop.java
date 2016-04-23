@@ -13,9 +13,7 @@ import cse.ucdenver.csci5593.parser.X86InstructionSet;
 public class InstPop extends Instruction {
     @Override
     public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
-        int stackAddress = memoryManager.getMemoryValue(10).value;
-
-        return memoryManager.getMemoryValue(stackAddress).accessTime;
+        return 1;
     }
 
     @Override
