@@ -41,8 +41,8 @@ public class InstStos extends Instruction {
         return 0;
     }
 
-    static {
-        X86InstructionSet.RegisterInstruction(InstRet.class, "STOS");
-        X86InstructionSet.RegisterInstruction(InstRet.class, "STOSL");
+    public static void load() {
+        X86InstructionSet.RegisterInstruction(InstStos.class, "STOS");
+        X86InstructionSet.RegisterInstruction(InstStos.class, "STOSL");
     }
 }

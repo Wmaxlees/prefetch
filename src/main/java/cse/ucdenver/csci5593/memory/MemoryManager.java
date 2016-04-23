@@ -1,6 +1,7 @@
 package cse.ucdenver.csci5593.memory;
 
 import cse.ucdenver.csci5593.memory.exceptions.AddressNotFoundException;
+import javafx.print.Collation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -182,12 +183,19 @@ public class MemoryManager {
     @Override
     public String toString() {
         String result = "MEMORY\n---------------------------\n";
-
         Iterator it = this.values.entrySet().iterator();
 
         while(it.hasNext()) {
             HashMap.Entry entry = (HashMap.Entry)it.next();
-            result += entry.getKey() + " : " + entry.getValue() + "\n";
+
+            String key = this.registers.getAddressName((Integer)entry.getKey());
+            if (key == null) {
+                key = (entry.getKey()).toString();
+            } else {
+                key += " (" + entry.getKey() + ")";
+            }
+
+            result += key + " : " + entry.getValue() + "\n";
         }
 
         return result;
