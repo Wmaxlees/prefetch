@@ -7,5 +7,6 @@ public enum OperandFlag {
     literal,
     pointer,
     register,
-    address
+    address,
+    instruction
 }

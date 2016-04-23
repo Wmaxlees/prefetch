@@ -7,6 +7,8 @@ import cse.ucdenver.csci5593.instruction.x86.*;
 import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
 import cse.ucdenver.csci5593.memory.X86RegisterMemory;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -70,7 +72,7 @@ public class X86InstructionSet implements InstructionSet {
         }
 
         for (int i = 1; i+offset < tokens.length; ++i) {
-            inst.addOperand(this.parseOperand(tokens[offset+i]));
+            inst.addOperand(this.parseOperand(tokens, offset+i));
         }
         instructions.put(index++, inst);
 
@@ -83,13 +85,14 @@ public class X86InstructionSet implements InstructionSet {
      * Take in a token and produce the correct Operand
      * instance
      *
-     * @param token The string to parse
+     * @param tokens The tokens from the original line
+     * @param index The starting index of tokens to parse
      * @return The instance of the Operand that represents
      * the value
      */
-    private Operand parseOperand(String token) {
+    private Operand parseOperand(String[] tokens, int index) {
         Operand operand;
-        token = token.trim();
+        String token = tokens[index].trim();
 
         if (token.endsWith(",")) {
             token = token.substring(0, token.length() - 1);
@@ -111,7 +114,9 @@ public class X86InstructionSet implements InstructionSet {
         } else if (false) {
             // TODO: HANDLE DIRECT ADDRESSING
         } else {
-            throw new ParserException("Unrecognized operand: " + token);
+            String[] instTokens = Arrays.copyOfRange(tokens, index, tokens.length);
+            System.out.println(instTokens[0]);
+            operand = new OperandX86Inst(this.generateInstructions(instTokens, 0).get(0));
         }
 
         return operand;
@@ -242,7 +247,9 @@ public class X86InstructionSet implements InstructionSet {
         InstOr.load();
         InstPop.load();
         InstPush.load();
+        InstRep.load();
         InstRet.load();
+        InstStos.load();
         InstSub.load();
         InstXor.load();
     }
