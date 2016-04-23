@@ -30,8 +30,10 @@ public class BasicCoreImpl implements Core
 		if (this.currentInstCycle == 0)
 		{
 			this.currentInst.execute(this.mm);
-			this.currentInst = inst.get(mm.getMemoryValue(mm.getRegisterAddress("%ip")));
-            System.out.println("Executing: " + this.currentInst.opCode());
+			this.currentInst = inst.get(mm.getMemoryValue(mm.getRegisterAddress("%ip")).value);
+            System.out.println("Executing: " + this.currentInst);
+            System.out.println("With ===>");
+            System.out.println(mm);
             this.currentInstCycle = this.currentInst.CPI(mm);
             if (this.currentInst == null) {
                 return false;
@@ -55,9 +57,7 @@ public class BasicCoreImpl implements Core
         this.currentCycle = 0;
 
         this.currentInst = this.inst.get(mm.getMemoryValue(mm.getRegisterAddress("%ip")).value);
-        System.out.println(this.currentInst.opCode());
-        System.out.println(this.currentInst.getOperand(0).getFlag().toString());
-        System.out.println(this.currentInst.getOperand(1));
+		System.out.println(this.currentInst);
         this.currentInstCycle = this.currentInst.CPI(mm);
     }
 }

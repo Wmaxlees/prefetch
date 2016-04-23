@@ -18,21 +18,21 @@ public class InstLea extends Instruction {
 
     public int execute(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
 
-        if ((this.operands != null) && this.operands.size() != 1) {
+        if ((this.operands != null) && this.operands.size() != 2) {
             throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
         }
         if (this.getOperand(0).getFlag() != OperandFlag.pointer) {
             throw new BadlyFormattedInstructionException(this.opCode() + "the operand is not a pointer");
         }
 
-        int result = this.getOperand(0).getValue(memoryManager);
-        memoryManager.setMemoryValue(this.getOperand(1).getValue(memoryManager), result);
+        OperandX86Ptr ptr = (OperandX86Ptr)this.getOperand(0);
+        memoryManager.setMemoryValue(this.getOperand(1).getAddress(memoryManager), ptr.getAddress(memoryManager));
         IPHelper.IncrementIP(memoryManager);
         return 0;
     }
 
-    static {
-        X86InstructionSet.RegisterInstruction(InstRet.class, "LEA");
-        X86InstructionSet.RegisterInstruction(InstRet.class, "LEAL");
+    public static void load() {
+        X86InstructionSet.RegisterInstruction(InstLea.class, "LEA");
+        X86InstructionSet.RegisterInstruction(InstLea.class, "LEAL");
     }
 }

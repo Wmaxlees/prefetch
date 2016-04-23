@@ -10,7 +10,8 @@ public interface RegisterMemoryModule extends MemoryModule {
         SIGN_FLAG,
         ADJUST_FLAG,
         CARRY_FLAG,
-        PARITY_FLAG
+        PARITY_FLAG,
+        DIRECTION_FLAG
     }
 
     /**

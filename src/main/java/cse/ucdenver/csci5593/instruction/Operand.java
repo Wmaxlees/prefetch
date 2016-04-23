@@ -15,7 +15,7 @@ public interface Operand {
     /**
      * Get the value of the operand
      *
-     * @param memoryManager The memory manager (only used for pointers)
+     * @param memoryManager The memory manager
      * @return The actual value of the operand
      */
     int getValue(MemoryManager memoryManager);
@@ -25,6 +25,14 @@ public interface Operand {
      * @param value The value to set the operand to
      */
     void setValue(int value);
+
+    /**
+     * Returns the address of the operand
+     *
+     * @param memoryManager The memory manager
+     * @return The memory location of the operand
+     */
+    int getAddress(MemoryManager memoryManager);
 
     /**
      *

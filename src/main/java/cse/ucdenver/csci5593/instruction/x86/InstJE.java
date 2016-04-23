@@ -26,7 +26,7 @@ public class InstJE extends Instruction {
         }
 
         if (memoryManager.getFlagStatus(RegisterMemoryModule.Flag.ZERO_FLAG)) {
-            IPHelper.setIP(memoryManager, this.operands.get(0).getValue(memoryManager));
+            IPHelper.setIP(memoryManager, this.getOperand(0).getValue(memoryManager));
         } else {
             IPHelper.IncrementIP(memoryManager);
         }

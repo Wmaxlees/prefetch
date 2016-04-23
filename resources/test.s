@@ -1,4 +1,4 @@
-.main:  movl	4(%esp), %ecx
+.main:  leal	4(%esp), %ecx
 	andl	$-16, %esp
 	pushl	-4(%ecx)
 	pushl	%ebp
@@ -33,3 +33,4 @@
 	popl	%ebp
 	leal	-4(%ecx), %esp
 	ret
+

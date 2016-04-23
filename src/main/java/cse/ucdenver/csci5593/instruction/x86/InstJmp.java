@@ -10,7 +10,7 @@ import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
 import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
-public class InstJMP extends Instruction {
+public class InstJmp extends Instruction {
 	@Override
 	public int CPI(MemoryManager memoryManager)
 			throws BadlyFormattedInstructionException {
@@ -21,17 +21,17 @@ public class InstJMP extends Instruction {
 		return "JMP";
 	}
 	
-	public int execute (MemoryManager memoryManager) throws BadlyFormattedInstructionException{
+	public int execute(MemoryManager memoryManager) throws BadlyFormattedInstructionException{
 		if (this.operands.size() != 1){
-			throw new BadlyFormattedInstructionException(this.opCode()+" Incorrect number of arguments for JMP.");
+			throw new BadlyFormattedInstructionException(this.opCode() + " Incorrect number of arguments for JMP.");
 	}
 		
-	    IPHelper.setIP(memoryManager, this.operands.get(0).getValue(memoryManager));
+	    IPHelper.setIP(memoryManager, this.getOperand(0).getValue(memoryManager));
 	    return 0;
 	}
 
 	public static void load() {
-		X86InstructionSet.RegisterInstruction(InstJMP.class, "JMP");
+		X86InstructionSet.RegisterInstruction(InstJmp.class, "JMP");
 	}
 }
 

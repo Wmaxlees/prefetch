@@ -19,23 +19,27 @@ public class InstRet extends Instruction {
     }
 
     public int execute(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
-        boolean operand = (this.operands != null);
-        if (operand && this.operands.size() != 1) {
+        boolean hasOp = this.operands.size() == 1;
+        if (this.operands.size() != 0 && !hasOp) {
             throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
         }
 
-        int result = memoryManager.getMemoryValue(memoryManager.getRegisterAddress("%cs")).value;
-        int a = memoryManager.getMemoryValue(this.getOperand(0).getValue(memoryManager)).value;
-        if (operand && this.operands.size() != 0) {
-            int sp = memoryManager.getMemoryValue(memoryManager.getRegisterAddress("%esp")).value;
-            sp -= a;
-            memoryManager.setMemoryValue(memoryManager.getRegisterAddress("%esp"), sp);
+        int cs = memoryManager.getRegisterValue("%cs");
+        int sp = memoryManager.getRegisterValue("%esp");
+
+        int shift = 0;
+        if (hasOp) {
+            shift = this.getOperand(0).getValue(memoryManager);
         }
-        IPHelper.setIP(memoryManager, result);
+
+        sp -= shift;
+        memoryManager.setRegisterValue("%esp", sp);
+
+        IPHelper.setIP(memoryManager, cs);
         return 0;
     }
 
-    static {
+    public static void load() {
         X86InstructionSet.RegisterInstruction(InstRet.class, "RET");
     }
 }

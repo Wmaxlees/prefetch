@@ -20,15 +20,15 @@ public class InstMul extends Instruction {
         if (this.operands.size() != 1) {
             throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
         }
-        int eax = memoryManager.getMemoryValue(1).value;
 
-        int result = memoryManager.getMemoryValue(this.getOperand(0).getValue(memoryManager)).value * eax;
+        int result = this.getOperand(0).getValue(memoryManager) * memoryManager.getRegisterValue("%eax");
 
         int edx = result >> 32;
-        eax = result ^ (edx << 32);
+        int eax = result ^ (edx << 32);
 
-        memoryManager.setMemoryValue(memoryManager.getRegisterAddress("%edx"), edx);
-        memoryManager.setMemoryValue(memoryManager.getRegisterAddress("%eax"), eax);
+        memoryManager.setRegisterValue("%eax", eax);
+        memoryManager.setRegisterValue("%edx", edx);
+
         if (edx == 0) {
             memoryManager.setFlag(RegisterMemoryModule.Flag.CARRY_FLAG);
             memoryManager.setFlag(RegisterMemoryModule.Flag.OVERFLOW_FLAG);
@@ -37,6 +37,7 @@ public class InstMul extends Instruction {
             memoryManager.resetFlag(RegisterMemoryModule.Flag.OVERFLOW_FLAG);
 
         }
+
         IPHelper.IncrementIP(memoryManager);
 
         return 0;

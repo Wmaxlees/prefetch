@@ -3,8 +3,6 @@ package cse.ucdenver.csci5593;
 import cse.ucdenver.csci5593.core.BasicCoreImpl;
 import cse.ucdenver.csci5593.core.Core;
 import cse.ucdenver.csci5593.instruction.Instruction;
-import cse.ucdenver.csci5593.instruction.x86.InstAdd;
-import cse.ucdenver.csci5593.instruction.x86.InstMov;
 import cse.ucdenver.csci5593.memory.FIFOCache;
 import cse.ucdenver.csci5593.memory.InfiniteMainMemory;
 import cse.ucdenver.csci5593.memory.MemoryManager;
@@ -13,9 +11,6 @@ import cse.ucdenver.csci5593.parser.Parser;
 import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 
 public class App 
 {
@@ -25,7 +20,7 @@ public class App
         X86InstructionSet.loadInstructions();
 
         Parser parser = new Parser(new X86InstructionSet());
-        HashMap<Integer, Instruction> inst = parser.parseFile("test.s");
+        HashMap<Integer, Instruction> inst = parser.parseFile("resources/test.s");
 
         MemoryManager mm = new MemoryManager(4);
         mm.setRegisterMemoryModule(new X86RegisterMemory());

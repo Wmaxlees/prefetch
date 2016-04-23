@@ -23,10 +23,9 @@ public class InstAdd extends Instruction {
             throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
         }
 
-        long result = memoryManager.getMemoryValue(this.getOperand(0).getValue(memoryManager)).value +
-                     memoryManager.getMemoryValue(this.getOperand(1).getValue(memoryManager)).value;
+        long result = this.getOperand(0).getValue(memoryManager) + this.getOperand(1).getValue(memoryManager);
 
-        memoryManager.setMemoryValue(this.getOperand(0).getValue(memoryManager), (int)result);
+        memoryManager.setMemoryValue(this.getOperand(1).getAddress(memoryManager), (int)result);
 
         this.setFlags(memoryManager, result);
 
