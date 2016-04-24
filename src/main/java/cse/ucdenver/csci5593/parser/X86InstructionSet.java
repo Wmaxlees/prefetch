@@ -62,7 +62,7 @@ public class X86InstructionSet implements InstructionSet {
             return null;
         }
 
-        Instruction inst = null;
+        Instruction inst;
         try {
             inst = instClass.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {

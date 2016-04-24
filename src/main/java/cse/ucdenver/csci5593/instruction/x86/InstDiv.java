@@ -6,7 +6,7 @@ import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
 import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
-public class InstDiv  extends Instruction {
+public class InstDiv extends Instruction {
     public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
         return 20;
     }
@@ -29,7 +29,6 @@ public class InstDiv  extends Instruction {
 
         memoryManager.setMemoryValue(memoryManager.getRegisterAddress("%edx"), remainder);
         memoryManager.setMemoryValue(memoryManager.getRegisterAddress("%eax"), quotient);
-
 
         IPHelper.IncrementIP(memoryManager);
 
