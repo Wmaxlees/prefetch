@@ -2,43 +2,37 @@ package cse.ucdenver.csci5593.instruction.x86;
 
 import cse.ucdenver.csci5593.instruction.BadlyFormattedInstructionException;
 import cse.ucdenver.csci5593.instruction.Instruction;
+import cse.ucdenver.csci5593.instruction.OperandFlag;
 import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
 import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
-public class InstDiv extends Instruction {
+public class InstLea extends Instruction {
     public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
-        return 20;
+        return 2;
     }
 
     public String opCode() {
-        return "DIV";
+        return "LEA";
     }
 
     public int execute(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
-        if (this.operands.size() != 1) {
+
+        if ((this.operands != null) && this.operands.size() != 2) {
             throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
         }
+        if (this.getOperand(0).getFlag() != OperandFlag.pointer) {
+            throw new BadlyFormattedInstructionException(this.opCode() + "the operand is not a pointer");
+        }
 
-        int divisor = (memoryManager.getRegisterValue("%edx") << 32 | memoryManager.getRegisterValue("%eax"));
-        int operand = this.getOperand(0).getValue(memoryManager);
-
-        int quotient = operand / divisor;
-        int remainder = operand % divisor;
-
-<<<<<<< HEAD
-=======
-        memoryManager.setRegisterValue("%eax", quotient);
-        memoryManager.setRegisterValue("%edx", remainder);
-
->>>>>>> bcbf4acb87ed9a5f8f17f0493897a59ce2f540c0
+        OperandX86Ptr ptr = (OperandX86Ptr)this.getOperand(0);
+        memoryManager.setMemoryValue(this.getOperand(1).getAddress(memoryManager), ptr.getAddress(memoryManager));
         IPHelper.IncrementIP(memoryManager);
-
         return 0;
     }
 
     public static void load() {
-        X86InstructionSet.RegisterInstruction(InstDiv.class, "DIV");
-        X86InstructionSet.RegisterInstruction(InstDiv.class, "DIVL");
+        X86InstructionSet.RegisterInstruction(InstLea.class, "LEA");
+        X86InstructionSet.RegisterInstruction(InstLea.class, "LEAL");
     }
 }

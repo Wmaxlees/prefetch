@@ -21,6 +21,7 @@ public class InstXor extends Instruction {
         if (this.operands.size() != 2) {
             throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
         }
+<<<<<<< HEAD
         long result = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value
                 ^ memoryManager.getMemoryValue(this.getOperand(1).getValue()).value;
 
@@ -50,6 +51,37 @@ public class InstXor extends Instruction {
             memoryManager.resetFlag(RegisterMemoryModule.Flag.SIGN_FLAG);
         }
 
+=======
+
+        long result = this.getOperand(0).getValue(memoryManager) ^ this.getOperand(1).getValue(memoryManager);
+
+        memoryManager.setMemoryValue(this.getOperand(1).getAddress(memoryManager), (int)result);
+
+        this.setFlags(memoryManager, result);
+
+        IPHelper.IncrementIP(memoryManager);
+
+        return 0;
+    }
+
+    private void setFlags(MemoryManager memoryManager, long result) {
+
+        memoryManager.resetFlag(RegisterMemoryModule.Flag.CARRY_FLAG);
+        memoryManager.resetFlag(RegisterMemoryModule.Flag.OVERFLOW_FLAG);
+
+        if (FlagHelper.GetParityFlag(result)) {
+            memoryManager.setFlag(RegisterMemoryModule.Flag.PARITY_FLAG);
+        } else {
+            memoryManager.resetFlag(RegisterMemoryModule.Flag.PARITY_FLAG);
+        }
+
+        if (FlagHelper.GetSignFlag(result)) {
+            memoryManager.setFlag(RegisterMemoryModule.Flag.SIGN_FLAG);
+        } else {
+            memoryManager.resetFlag(RegisterMemoryModule.Flag.SIGN_FLAG);
+        }
+
+>>>>>>> bcbf4acb87ed9a5f8f17f0493897a59ce2f540c0
         if (FlagHelper.GetZeroFlag(result)) {
             memoryManager.setFlag(RegisterMemoryModule.Flag.ZERO_FLAG);
         } else {
@@ -57,7 +89,11 @@ public class InstXor extends Instruction {
         }
     }
 
+<<<<<<< HEAD
     static {
+=======
+    public static void load() {
+>>>>>>> bcbf4acb87ed9a5f8f17f0493897a59ce2f540c0
         X86InstructionSet.RegisterInstruction(InstXor.class, "XOR");
         X86InstructionSet.RegisterInstruction(InstXor.class, "XORL");
     }

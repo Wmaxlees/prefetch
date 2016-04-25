@@ -2,6 +2,10 @@ package cse.ucdenver.csci5593.instruction.x86;
 
 import cse.ucdenver.csci5593.instruction.Operand;
 import cse.ucdenver.csci5593.instruction.OperandFlag;
+import cse.ucdenver.csci5593.memory.MemoryManager;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by max on 4/7/16.
@@ -14,7 +18,7 @@ public class OperandX86Ptr implements Operand {
      */
     public OperandX86Ptr(String value) {
         this.flag = OperandFlag.pointer;
-        this.dereference(value);
+        this.token = value;
     }
 
     /**
@@ -33,13 +37,13 @@ public class OperandX86Ptr implements Operand {
      * @return The value
      */
     @Override
-    public int getValue() {
-        return this.value;
+    public int getValue(MemoryManager memoryManager) {
+        return memoryManager.getMemoryValue(this.getAddress(memoryManager)).value;
     }
 
     @Override
-    public int getOffset() {
-        return offset;
+    public void setValue(int value) {
+        System.err.println("Attempting to set value of pointer");
     }
 
     @Override
@@ -50,25 +54,41 @@ public class OperandX86Ptr implements Operand {
     /**
      * Get rid of the pointer symbol
      *
-     * @param token The token to remove the pointer from
+     * @param memoryManager The memory manager of the executing thread
      * @return A string that's the value
      */
-    private void dereference(String token) {
-        String val = token;
+    private int dereference(MemoryManager memoryManager) {
+        Pattern pattern = Pattern.compile("[-+]*[0-9]*\\(%[a-zA-Z]+\\)");
+        Matcher matcher = pattern.matcher(this.token);
 
-        if (!token.startsWith("(")) {
-            String[] tokens = val.split("\\(");
-            this.offset = Integer.getInteger(tokens[0]);
+        int offset = 0;
+        String val = "";
 
-            val = "(" + tokens[1];
+        if (matcher.matches()) {
+            if (!token.startsWith("(")) {
+                String[] tokens = token.split("\\(");
+                offset = Integer.parseInt(tokens[0]);
+                val = "(" + tokens[1];
+            }
+
+            val = val.substring(1, val.length()-1);
+        } else {
+            String[] tokens = token.split(":");
+            val = tokens[0];
+            offset = Integer.parseInt(tokens[1]);
         }
 
-        val = val.substring(1, val.length()-2);
+        return memoryManager.getRegisterValue(val) + offset;
+    }
 
-        this.value = Integer.getInteger(val);
+    public int getAddress(MemoryManager memoryManager) {
+        return this.dereference(memoryManager);
+    }
+
+    public String toString() {
+        return ("(" + this.flag + ": " + this.token +")");
     }
 
     private OperandFlag flag;
-    private int value;
-    private int offset;
+    private String token;
 }

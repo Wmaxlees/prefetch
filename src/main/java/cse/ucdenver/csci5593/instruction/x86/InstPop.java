@@ -13,9 +13,7 @@ import cse.ucdenver.csci5593.parser.X86InstructionSet;
 public class InstPop extends Instruction {
     @Override
     public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
-        int stackAddress = memoryManager.getMemoryValue(10).value;
-
-        return memoryManager.getMemoryValue(stackAddress).accessTime;
+        return 1;
     }
 
     @Override
@@ -33,18 +31,18 @@ public class InstPop extends Instruction {
             this.throwException("Operand is not a register");
         }
 
-        int stackPointer = memoryManager.getMemoryValue(10).value;
+        int stackPointer = memoryManager.getRegisterValue("%esp");
         int value = memoryManager.getMemoryValue(stackPointer).value;
 
-        memoryManager.setMemoryValue(this.getOperand(0).getValue(), value);
-        memoryManager.setMemoryValue(10, stackPointer-1);
+        memoryManager.setMemoryValue(this.getOperand(0).getAddress(memoryManager), value);
+        memoryManager.setRegisterValue("%esp", stackPointer-1);
 
         IPHelper.IncrementIP(memoryManager);
 
         return 0;
     }
 
-    static {
+    public static void load() {
         X86InstructionSet.RegisterInstruction(InstPop.class, "POP");
         X86InstructionSet.RegisterInstruction(InstPop.class, "POPL");
     }

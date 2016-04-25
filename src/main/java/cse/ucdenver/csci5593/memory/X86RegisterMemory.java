@@ -20,6 +20,7 @@ public class X86RegisterMemory implements RegisterMemoryModule {
         flags.put(Flag.OVERFLOW_FLAG, false);
         flags.put(Flag.PARITY_FLAG, false);
         flags.put(Flag.SIGN_FLAG, false);
+        flags.put(Flag.DIRECTION_FLAG, false);
     }
 
     @Override
@@ -27,7 +28,7 @@ public class X86RegisterMemory implements RegisterMemoryModule {
         if (flags.containsKey(name)) {
             return flags.get(name);
         } else {
-            throw new AddressNotFoundException();
+            throw new AddressNotFoundException(name.toString());
         }
     }
 
@@ -36,7 +37,7 @@ public class X86RegisterMemory implements RegisterMemoryModule {
         if (flags.containsKey(name)) {
             flags.replace(name, true);
         } else {
-            throw new AddressNotFoundException();
+            throw new AddressNotFoundException(name.toString());
         }
     }
 
@@ -45,7 +46,7 @@ public class X86RegisterMemory implements RegisterMemoryModule {
         if (flags.containsKey(name)) {
             flags.replace(name, false);
         } else {
-            throw new AddressNotFoundException();
+            throw new AddressNotFoundException(name.toString());
         }
     }
 
@@ -88,14 +89,62 @@ public class X86RegisterMemory implements RegisterMemoryModule {
                 return 17;
             case "%flags":           // 18
                 return 18;
+            case "%gs":              // 19
+                return 19;
             default:
-                throw new AddressNotFoundException();
+                throw new AddressNotFoundException(name.toString());
+        }
+    }
+
+    @Override
+    public String getAddressName(int address) {
+        switch (address) {
+            case 1:
+                return "%eax";
+            case 2:
+                return "%ax";
+            case 3:
+                return "%ebx";
+            case 4:
+                return "%bx";
+            case 5:
+                return "%ecx";
+            case 6:
+                return "%cx";
+            case 7:
+                return "%edx";
+            case 8:
+                return "%dx";
+            case 9:
+                return "%ebp";
+            case 10:
+                return "%esp";
+            case 11:
+                return "%edi";
+            case 12:
+                return "%si";
+            case 13:
+                return "%cs";
+            case 14:
+                return "%ss";
+            case 15:
+                return "%es";
+            case 16:
+                return "%ds";
+            case 17:
+                return "%ip";
+            case 20:
+                return "%flags";
+            case 19:
+                return "%gs";
+            default:
+                return null;
         }
     }
 
     @Override
     public int getMaxRegisterIndex() {
-        return 18;
+        return 19;
     }
 
     @Override

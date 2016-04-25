@@ -14,7 +14,7 @@ public class InstMov extends Instruction {
 
     @Override
     public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
-        int result = 0;
+        int result = 1;
 
         if (this.operands.size() != 2) {
             this.throwException("Incorrect number of arguments.");
@@ -22,18 +22,9 @@ public class InstMov extends Instruction {
 
         if (this.getOperand(0).isType(OperandFlag.literal)) {
             return result;
-        }
-
-        if (this.getOperand(0).isType(OperandFlag.pointer)) {
-            int effectiveAddress = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value +
-                    this.getOperand(0).getOffset();
-
-            result += memoryManager.getMemoryValue(effectiveAddress).accessTime;
         } else {
-            result += memoryManager.getMemoryValue(this.getOperand(0).getValue()).accessTime;
+            result += memoryManager.getMemoryValue(this.getOperand(0).getValue(memoryManager)).accessTime;
         }
-
-        IPHelper.IncrementIP(memoryManager);
 
         return result;
     }
@@ -53,28 +44,14 @@ public class InstMov extends Instruction {
             this.throwException("Second operand cannot be a constant.");
         }
 
-        int addrA = 0, addrB = 0;
+        memoryManager.setMemoryValue(this.getOperand(1).getAddress(memoryManager), this.getOperand(0).getValue(memoryManager));
 
-        if (this.getOperand(0).isType(OperandFlag.pointer)) {
-            addrA = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value +
-                    this.getOperand(0).getOffset();
-        } else {
-            addrA = this.getOperand(0).getValue();
-        }
-
-        if (this.getOperand(1).isType(OperandFlag.pointer)) {
-            addrB = memoryManager.getMemoryValue(this.getOperand(1).getValue()).value +
-                    this.getOperand(1).getOffset();
-        } else {
-            addrB = this.getOperand(1).getValue();
-        }
-
-        memoryManager.setMemoryValue(addrA, memoryManager.getMemoryValue(addrB).value);
+        IPHelper.IncrementIP(memoryManager);
 
         return 0;
     }
 
-    static {
+    public static void load() {
         X86InstructionSet.RegisterInstruction(InstMov.class, "MOV");
         X86InstructionSet.RegisterInstruction(InstMov.class, "MOVL");
     }

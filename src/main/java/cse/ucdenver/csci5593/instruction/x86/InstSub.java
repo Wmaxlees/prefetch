@@ -22,10 +22,9 @@ public class InstSub  extends Instruction {
             throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
         }
 
-        long result = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value -
-                     memoryManager.getMemoryValue(this.getOperand(1).getValue()).value;
+        long result = this.getOperand(1).getValue(memoryManager) - this.getOperand(0).getValue(memoryManager);
 
-        memoryManager.setMemoryValue(this.getOperand(0).getValue(), (int)result);
+        memoryManager.setMemoryValue(this.getOperand(1).getAddress(memoryManager), (int)result);
 
         this.setFlags(memoryManager, result);
 
@@ -57,7 +56,7 @@ public class InstSub  extends Instruction {
         }
     }
 
-    static {
+    public static void load() {
         X86InstructionSet.RegisterInstruction(InstSub.class, "SUB");
         X86InstructionSet.RegisterInstruction(InstSub.class, "SUBL");
     }

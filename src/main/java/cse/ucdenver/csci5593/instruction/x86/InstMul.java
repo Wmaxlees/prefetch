@@ -20,6 +20,7 @@ public class InstMul extends Instruction {
         if (this.operands.size() != 1) {
             throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
         }
+<<<<<<< HEAD
         int eax = memoryManager.getMemoryValue(1).value;
         int result = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value * eax;
 
@@ -28,6 +29,17 @@ public class InstMul extends Instruction {
 
         memoryManager.setMemoryValue(memoryManager.getRegisterAddress("%edx"), edx);
         memoryManager.setMemoryValue(memoryManager.getRegisterAddress("%eax"), eax);
+=======
+
+        int result = this.getOperand(0).getValue(memoryManager) * memoryManager.getRegisterValue("%eax");
+
+        int edx = result >> 32;
+        int eax = result ^ (edx << 32);
+
+        memoryManager.setRegisterValue("%eax", eax);
+        memoryManager.setRegisterValue("%edx", edx);
+
+>>>>>>> bcbf4acb87ed9a5f8f17f0493897a59ce2f540c0
         if (edx == 0) {
             memoryManager.setFlag(RegisterMemoryModule.Flag.CARRY_FLAG);
             memoryManager.setFlag(RegisterMemoryModule.Flag.OVERFLOW_FLAG);
@@ -36,12 +48,16 @@ public class InstMul extends Instruction {
             memoryManager.resetFlag(RegisterMemoryModule.Flag.OVERFLOW_FLAG);
 
         }
+<<<<<<< HEAD
+=======
+
+>>>>>>> bcbf4acb87ed9a5f8f17f0493897a59ce2f540c0
         IPHelper.IncrementIP(memoryManager);
 
         return 0;
     }
 
-    static {
+    public static void load() {
         X86InstructionSet.RegisterInstruction(InstMul.class, "MUL");
         X86InstructionSet.RegisterInstruction(InstMul.class, "MULL");
     }

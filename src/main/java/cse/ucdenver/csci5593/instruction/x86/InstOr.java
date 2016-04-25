@@ -2,6 +2,7 @@ package cse.ucdenver.csci5593.instruction.x86;
 
 import cse.ucdenver.csci5593.instruction.BadlyFormattedInstructionException;
 import cse.ucdenver.csci5593.instruction.Instruction;
+import cse.ucdenver.csci5593.instruction.OperandFlag;
 import cse.ucdenver.csci5593.instruction.x86.helpers.FlagHelper;
 import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
@@ -21,6 +22,7 @@ public class InstOr extends Instruction {
         if (this.operands.size() != 2) {
             throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
         }
+<<<<<<< HEAD
         long result = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value
                 | memoryManager.getMemoryValue(this.getOperand(1).getValue()).value;
 
@@ -33,6 +35,20 @@ public class InstOr extends Instruction {
         return 0;
     }
 
+=======
+
+        long result = this.getOperand(0).getValue(memoryManager) | this.getOperand(1).getValue(memoryManager);
+
+        memoryManager.setMemoryValue(this.getOperand(1).getAddress(memoryManager), (int)result);
+
+        this.setFlags(memoryManager, result);
+
+        IPHelper.IncrementIP(memoryManager);
+
+        return 0;
+    }
+
+>>>>>>> bcbf4acb87ed9a5f8f17f0493897a59ce2f540c0
     private void setFlags(MemoryManager memoryManager, long result) {
         memoryManager.resetFlag(RegisterMemoryModule.Flag.CARRY_FLAG);
         memoryManager.resetFlag(RegisterMemoryModule.Flag.OVERFLOW_FLAG);
@@ -56,7 +72,11 @@ public class InstOr extends Instruction {
         }
     }
 
+<<<<<<< HEAD
     static {
+=======
+    public static void load() {
+>>>>>>> bcbf4acb87ed9a5f8f17f0493897a59ce2f540c0
         X86InstructionSet.RegisterInstruction(InstOr.class, "OR");
         X86InstructionSet.RegisterInstruction(InstOr.class, "ORL");
     }

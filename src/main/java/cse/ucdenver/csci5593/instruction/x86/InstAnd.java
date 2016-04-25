@@ -21,6 +21,7 @@ public class InstAnd extends Instruction {
         if (this.operands.size() != 2) {
             throw new BadlyFormattedInstructionException(this.opCode() + ": Incorrect number of arguments.");
         }
+<<<<<<< HEAD
         long result = memoryManager.getMemoryValue(this.getOperand(0).getValue()).value
                 & memoryManager.getMemoryValue(this.getOperand(1).getValue()).value;
 
@@ -33,6 +34,20 @@ public class InstAnd extends Instruction {
         return 0;
     }
 
+=======
+
+        long result = this.getOperand(0).getValue(memoryManager) & this.getOperand(1).getValue(memoryManager);
+
+        memoryManager.setMemoryValue(this.getOperand(1).getAddress(memoryManager), (int)result);
+
+        this.setFlags(memoryManager, result);
+
+        IPHelper.IncrementIP(memoryManager);
+
+        return 0;
+    }
+
+>>>>>>> bcbf4acb87ed9a5f8f17f0493897a59ce2f540c0
     private void setFlags(MemoryManager memoryManager, long result) {
 
         memoryManager.resetFlag(RegisterMemoryModule.Flag.CARRY_FLAG);
@@ -58,8 +73,14 @@ public class InstAnd extends Instruction {
 
     }
 
+<<<<<<< HEAD
     static {
         X86InstructionSet.RegisterInstruction(InstAnd.class, "AND");
         X86InstructionSet.RegisterInstruction(InstAdd.class, "ANDL");
+=======
+    public static void load() {
+        X86InstructionSet.RegisterInstruction(InstAnd.class, "AND");
+        X86InstructionSet.RegisterInstruction(InstAnd.class, "ANDL");
+>>>>>>> bcbf4acb87ed9a5f8f17f0493897a59ce2f540c0
     }
 }

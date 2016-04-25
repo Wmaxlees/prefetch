@@ -34,15 +34,26 @@ public class Parser {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
+                System.out.println("Parsing: " + line);
+                line = line.trim();
+                line = this.instSet.stripComments(line);
+                if (line.isEmpty()) {
+                    continue;
+                }
 
                 // Split the line at the spaces
-                String[] splitLine = this.instSet.stripComments(line).split(" ");
+                String[] splitLine = line.split("[\\t ]+");
 
                 HashMap<Integer, Instruction> inst = this.instSet.generateInstructions(splitLine, instructionIndex);
-                instructionIndex += inst.size();
 
-                // Add instructions to set
-                result.putAll(inst);
+                System.out.println("Adding: " + inst);
+
+                if (inst != null) {
+                    instructionIndex += inst.size();
+                    result.putAll(inst);
+                }
+
+                System.out.println("\n\n");
             }
         } catch (FileNotFoundException e) {
             System.err.print("Parse file not found: " + filename);
@@ -50,6 +61,8 @@ public class Parser {
             System.err.print("Error reading parse file: " + e);
         }
 
-        return null;
+        System.out.println(result);
+
+        return result;
     }
 }

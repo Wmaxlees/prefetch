@@ -10,7 +10,8 @@ public interface RegisterMemoryModule extends MemoryModule {
         SIGN_FLAG,
         ADJUST_FLAG,
         CARRY_FLAG,
-        PARITY_FLAG
+        PARITY_FLAG,
+        DIRECTION_FLAG
     }
 
     /**
@@ -21,12 +22,24 @@ public interface RegisterMemoryModule extends MemoryModule {
      */
     int getRegisterAddress(String name);
 
+
     /**
-     * Get the value of a specific flag
+     * Returns the name of the address. Or null if
+     * the the address is not a register
      *
-     * @param name The name of the flag to get
-     * @return The value of the flag
+     * @param address The named address
+     * @return Either the name or null if the address is not
+     * a register
      */
+    String getAddressName(int address);
+
+
+        /**
+         * Get the value of a specific flag
+         *
+         * @param name The name of the flag to get
+         * @return The value of the flag
+         */
     boolean getFlag(Flag name);
 
     /**
