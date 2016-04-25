@@ -1,0 +1,8 @@
+cse.ucdenver.csci5593
+cse.ucdenver.csci5593.core
+cse.ucdenver.csci5593.instruction
+cse.ucdenver.csci5593.instruction.x86
+cse.ucdenver.csci5593.instruction.x86.helpers
+cse.ucdenver.csci5593.memory
+cse.ucdenver.csci5593.memory.exceptions
+cse.ucdenver.csci5593.parser
