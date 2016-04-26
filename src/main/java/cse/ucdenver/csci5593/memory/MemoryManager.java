@@ -16,9 +16,9 @@ public class MemoryManager {
      * Holds the memory modules (attempts to access
      * lower indices first)
      */
-    private RegisterMemoryModule registers;
-    private List<MemoryModule> modules;
-    private HashMap<Integer, Integer> values;
+    protected RegisterMemoryModule registers;
+    protected List<MemoryModule> modules;
+    protected HashMap<Integer, Integer> values;
 
     /**
      * Create a new instance of the MemoryManager
@@ -91,10 +91,7 @@ public class MemoryManager {
      * existing module
      */
     public boolean addModule(int index, MemoryModule module) throws IndexOutOfBoundsException {
-        if (!(index < modules.size())) {
-            return false;
-        }
-        this.modules.set(index, module);
+        this.modules.add(index, module);
         return true;
     }
 
@@ -199,5 +196,10 @@ public class MemoryManager {
         }
 
         return result;
+    }
+
+    public HelperMemoryManager generateHelperMemoryManager() {
+        System.out.println(this.modules);
+        return new HelperMemoryManager(this.modules.size(), this.values, this.modules, this.registers);
     }
 }

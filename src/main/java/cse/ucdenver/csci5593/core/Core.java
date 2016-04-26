@@ -16,8 +16,41 @@ public interface Core {
      * @param list The list of instructions to execute
      */
     void setInstruction(HashMap<Integer, Instruction> list);
+
+    /**
+     * Should be called every tick.
+     *
+     * @return Whether the core is continuing to run
+     */
     boolean update();
+
+
+    /**
+     * Execute any initialization needed before the core can run
+     *
+     */
     void initialize();
+
+    /**
+     * The total amount of cycles the core ran
+     *
+     * @return
+     */
     int getRuntime();
+
+    /**
+     * Set the memory manager for the core
+     *
+     * @param mm The memory manager
+     */
     void setMemoryManager(MemoryManager mm);
+
+
+    /**
+     * Create a core that will share the L3 cache
+     * and main memory with the current core
+     *
+     * @return The helper core
+     */
+    Core generateHelperCore();
 }

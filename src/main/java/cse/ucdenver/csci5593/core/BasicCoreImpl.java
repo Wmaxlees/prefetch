@@ -39,6 +39,8 @@ public class BasicCoreImpl implements Core
             }
 
 			this.currentInstCycle = this.currentInst.CPI(mm);
+
+            this.mm.update();
 		}
         return true;
 	}
@@ -61,4 +63,14 @@ public class BasicCoreImpl implements Core
 		System.out.println(this.currentInst);
         this.currentInstCycle = this.currentInst.CPI(mm);
     }
+
+	public Core generateHelperCore() {
+		Core newCore = new BasicCoreImpl();
+
+        newCore.setInstruction(this.inst);
+        System.out.println(this.mm);
+        newCore.setMemoryManager(this.mm.generateHelperMemoryManager());
+
+        return newCore;
+	}
 }

@@ -14,14 +14,16 @@ public class FIFOCache implements MemoryModule{
         this.current = 0;
         this.max = size;
         this.accessTime = time;
-        this.cache = new ArrayList<Integer>();
+        this.cache = new ArrayList<>(size);
+
+        for (int i = 0; i < size; ++i) {
+            this.cache.add(i, 0);
+        }
     }
 
     public boolean hasValue(int i) {
-        for(int j : this.cache)
-        {
-            if (j == i)
-            {
+        for(int j : this.cache) {
+            if (j == i) {
                 return true;
             }
         }

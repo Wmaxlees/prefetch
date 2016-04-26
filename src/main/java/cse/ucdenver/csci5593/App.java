@@ -34,10 +34,13 @@ public class App
         core.setMemoryManager(mm);
         core.initialize();
 
-        while (core.update()) {
-            mm.update();
-            
-        }
+        Core helperCore = core.generateHelperCore();
+        helperCore.initialize();
+
+        while (core.update() && helperCore.update()) {}
+
+        System.out.println("Main Thread: " + core.getRuntime());
+        System.out.println("Helper Thread: " + helperCore.getRuntime());
 
     }
 }
