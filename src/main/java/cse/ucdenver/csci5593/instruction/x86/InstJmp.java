@@ -1,6 +1,4 @@
-/**
- * Created by Ahmed on 4/19/16.
- */
+
 package cse.ucdenver.csci5593.instruction.x86;
 
 import cse.ucdenver.csci5593.instruction.BadlyFormattedInstructionException;
@@ -9,7 +7,9 @@ import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
 import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
-
+/**
+ * Created by Ahmed on 4/19/16.
+ */
 public class InstJmp extends Instruction {
     @Override
     public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
