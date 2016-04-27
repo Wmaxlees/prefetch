@@ -7,6 +7,9 @@ import cse.ucdenver.csci5593.memory.MemoryManager;
 import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
 import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
+/**
+ * Created by Jaspreet.
+ */
 public class InstMul extends Instruction {
     public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
         return 20;
