@@ -3,14 +3,16 @@ package cse.ucdenver.csci5593.memory;
 import java.util.List;
 import java.util.ArrayList;
 
-public class FIFOCache implements MemoryModule{
+/**
+ * Created by Jaspreet on 4/15/2016.
+ */
+public class FIFOCache implements MemoryModule {
     private int current;
     private int max;
     private int accessTime;
     private List<Integer> cache;
 
-    public FIFOCache(int size, int time)
-    {
+    public FIFOCache(int size, int time) {
         this.current = 0;
         this.max = size;
         this.accessTime = time;
@@ -18,10 +20,8 @@ public class FIFOCache implements MemoryModule{
     }
 
     public boolean hasValue(int i) {
-        for(int j : this.cache)
-        {
-            if (j == i)
-            {
+        for (int j : this.cache) {
+            if (j == i) {
                 return true;
             }
         }
@@ -33,7 +33,8 @@ public class FIFOCache implements MemoryModule{
         this.current = (this.current + 1) % this.max;
     }
 
-    public void update() {}
+    public void update() {
+    }
 
     public int checkTime() {
         return 0;
@@ -43,7 +44,4 @@ public class FIFOCache implements MemoryModule{
         return this.accessTime;
     }
 
-
-
 }
-
