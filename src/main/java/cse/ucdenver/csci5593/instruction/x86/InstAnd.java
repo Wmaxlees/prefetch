@@ -9,7 +9,7 @@ import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
 import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
 /**
- * Created by Jaspreet.
+ * Created by Jaspreet 4/17/2016
  */
 public class InstAnd extends Instruction {
     public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
