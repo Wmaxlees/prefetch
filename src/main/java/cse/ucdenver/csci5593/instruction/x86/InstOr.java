@@ -8,6 +8,7 @@ import cse.ucdenver.csci5593.instruction.x86.helpers.IPHelper;
 import cse.ucdenver.csci5593.memory.MemoryManager;
 import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
 import cse.ucdenver.csci5593.parser.X86InstructionSet;
+
 /**
  * Created by Jaspreet.
  */
@@ -27,7 +28,7 @@ public class InstOr extends Instruction {
 
         long result = this.getOperand(0).getValue(memoryManager) | this.getOperand(1).getValue(memoryManager);
 
-        memoryManager.setMemoryValue(this.getOperand(1).getAddress(memoryManager), (int)result);
+        memoryManager.setMemoryValue(this.getOperand(1).getAddress(memoryManager), (int) result);
 
         this.setFlags(memoryManager, result);
 
