@@ -12,10 +12,8 @@ import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
 import java.util.HashMap;
 
-public class App 
-{
-    public static void main( String[] args )
-    {
+public class App {
+    public static void main(String[] args) {
 
         X86InstructionSet.loadInstructions();
 
@@ -37,7 +35,8 @@ public class App
         Core helperCore = core.generateHelperCore();
         helperCore.initialize();
 
-        while (core.update() && helperCore.update()) {}
+        while (core.update() && helperCore.update()) {
+        }
 
         System.out.println("Main Thread: " + core.getRuntime());
         System.out.println("Helper Thread: " + helperCore.getRuntime());
