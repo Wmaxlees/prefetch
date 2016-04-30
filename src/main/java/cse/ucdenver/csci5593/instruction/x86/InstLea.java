@@ -28,6 +28,7 @@ public class InstLea extends Instruction {
         OperandX86Ptr ptr = (OperandX86Ptr)this.getOperand(0);
         memoryManager.setMemoryValue(this.getOperand(1).getAddress(memoryManager), ptr.getAddress(memoryManager));
         IPHelper.IncrementIP(memoryManager);
+
         return 0;
     }
 

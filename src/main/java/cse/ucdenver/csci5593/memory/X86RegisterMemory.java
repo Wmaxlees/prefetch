@@ -155,6 +155,9 @@ public class X86RegisterMemory implements RegisterMemoryModule {
 
     @Override
     public boolean hasValue(int memoryLocation) {
+        if (this.getMaxRegisterIndex() >= memoryLocation) {
+            return true;
+        }
         return false;
     }
 
@@ -189,5 +192,15 @@ public class X86RegisterMemory implements RegisterMemoryModule {
         }
 
         return newRegs;
+    }
+
+    @Override
+    public MemoryModule duplicate() {
+        return new X86RegisterMemory();
+    }
+
+    @Override
+    public String getName() {
+        return "Registers";
     }
 }

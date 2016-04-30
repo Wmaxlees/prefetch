@@ -3,10 +3,7 @@ package cse.ucdenver.csci5593.memory;
 import cse.ucdenver.csci5593.memory.exceptions.AddressNotFoundException;
 import javafx.print.Collation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by max on 3/14/16.
@@ -18,14 +15,32 @@ public class MemoryManager {
      */
     protected RegisterMemoryModule registers;
     protected List<MemoryModule> modules;
-    protected HashMap<Integer, Integer> values;
+    protected TreeMap<Integer, Integer> values;
+
+    protected List<Integer> hits;
+    protected List<Integer> misses;
+    protected int accesses;
 
     /**
      * Create a new instance of the MemoryManager
      */
     public MemoryManager(int slots) {
         this.modules = new ArrayList<>(slots);
-        this.values = new HashMap<>();
+
+        this.hits = new ArrayList<>(slots);
+        for (int i =0; i < slots; ++i) {
+            this.hits.add(i, 0);
+        }
+        System.out.println(this.hits);
+
+        this.misses = new ArrayList<>(slots);
+        for (int i = 0; i < slots; ++i) {
+            this.misses.add(i, 0);
+        }
+        System.out.println(this.misses);
+
+        this.values = new TreeMap<>();
+        this.accesses = 0;
     }
 
     /**
@@ -166,12 +181,22 @@ public class MemoryManager {
             return result;
         }
 
-        for (MemoryModule module : this.modules) {
+        ++this.accesses;
+
+        for (int i = 0; i < modules.size(); ++i) {
+            MemoryModule module = this.modules.get(i);
+
             accum += module.checkTime();
             if (module.hasValue(address)) {
+                this.hits.set(i, this.hits.get(i)+1);
                 result.accessTime = accum + module.accessTime();
                 break;
             }
+            this.misses.set(i, this.misses.get(i)+1);
+        }
+
+        for (MemoryModule module : this.modules) {
+            module.setValue(address);
         }
 
         return result;
@@ -198,8 +223,70 @@ public class MemoryManager {
         return result;
     }
 
+    /**
+     * Create a helper memory manager with the same L3
+     * and main memory as the original memory manager
+     *
+     * @return The helper memory manager
+     */
     public HelperMemoryManager generateHelperMemoryManager() {
         System.out.println(this.modules);
         return new HelperMemoryManager(this.modules.size(), this.values, this.modules, this.registers);
+    }
+
+    /**
+     * Returns the number of accesses of
+     *
+     * @return
+     */
+    public int getAccesses() {
+        return this.accesses;
+    }
+
+    /**
+     * Returns the number of hits for all
+     * non-register memory modules
+     *
+     * @return List of integers of all hits
+     */
+    public List<Integer> getAllHits() {
+        return this.hits;
+    }
+
+    /**
+     * Return the hits of a specific memory module
+     *
+     * @param index The index of the memory module
+     * @return The hits for the memory module with the
+     *         given index
+     */
+    public int getHits(int index) {
+        return this.hits.get(index);
+    }
+
+    /**
+     * Returns the number of misses for all
+     * non-register memory modules'
+     *
+     * @return List of integers of all misses
+     */
+    public List<Integer> getAllMisses() {
+        return this.misses;
+    }
+
+    /**
+     * Returns the number of misses for a particular
+     * memory module
+     *
+     * @param index The index of the memory module
+     * @return The misses for the memory module with
+     *         the given index
+     */
+    public int getMisses(int index) {
+        return this.misses.get(index);
+    }
+
+    public String getModuleName(int index) {
+        return this.modules.get(index).getName();
     }
 }

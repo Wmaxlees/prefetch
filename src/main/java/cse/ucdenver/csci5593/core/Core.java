@@ -53,4 +53,13 @@ public interface Core {
      * @return The helper core
      */
     Core generateHelperCore();
+
+    /**
+     * Create a string that contains data about
+     * runtimes, hits, misses, etc.
+     *
+     * @return A string containing the core's
+     *         statistics
+     */
+    String getStatistics();
 }

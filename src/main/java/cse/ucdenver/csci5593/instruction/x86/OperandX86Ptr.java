@@ -61,7 +61,11 @@ public class OperandX86Ptr implements Operand {
         Pattern pattern = Pattern.compile("[-+]*[0-9]*\\(%[a-zA-Z]+\\)");
         Matcher matcher = pattern.matcher(this.token);
 
+        Pattern pattern2 = Pattern.compile("\\d*(\\w*,%?\\w*,\\w*)");
+        Matcher matcher2 = pattern2.matcher(this.token);
+
         int offset = 0;
+        int multiplier = 1;
         String val = "";
 
         if (matcher.matches()) {
@@ -72,13 +76,18 @@ public class OperandX86Ptr implements Operand {
             }
 
             val = val.substring(1, val.length()-1);
+        } else if (matcher2.matches()) {
+            String[] split = this.token.split("\\(|,|\\)");
+            offset = Integer.parseInt(split[0]);
+            val = split[2];
+            multiplier = Integer.parseInt(split[3]);
         } else {
             String[] tokens = token.split(":");
             val = tokens[0];
             offset = Integer.parseInt(tokens[1]);
         }
 
-        return memoryManager.getRegisterValue(val) + offset;
+        return (memoryManager.getRegisterValue(val)*multiplier) + offset;
     }
 
     public int getAddress(MemoryManager memoryManager) {

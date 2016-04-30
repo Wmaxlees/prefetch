@@ -24,4 +24,14 @@ public class InfiniteMainMemory implements MemoryModule {
 
     @Override
     public void update() {}
+
+    @Override
+    public MemoryModule duplicate() {
+        return new InfiniteMainMemory();
+    }
+
+    @Override
+    public String getName() {
+        return "MM";
+    }
 }

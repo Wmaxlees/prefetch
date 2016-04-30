@@ -26,9 +26,6 @@ public class InstPush extends Instruction {
         if (this.operands.size() != 1) {
             this.throwException("Wrong number of operands");
         }
-        if (!this.getOperand(0).isType(OperandFlag.register) && !this.getOperand(0).isType(OperandFlag.pointer)) {
-            this.throwException("Operand not register");
-        }
 
         int stackAddress = memoryManager.getRegisterValue("%esp");     // Stack
         int value = this.getOperand(0).getValue(memoryManager);
