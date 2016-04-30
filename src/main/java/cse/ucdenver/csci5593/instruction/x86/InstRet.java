@@ -9,6 +9,9 @@ import cse.ucdenver.csci5593.memory.MemoryManager.MemoryReturn;
 import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
 import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
+/**
+ * Created by jaspreet on 4/19/16.
+ */
 public class InstRet extends Instruction {
     public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
         return 1;

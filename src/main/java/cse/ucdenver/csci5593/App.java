@@ -13,10 +13,8 @@ import cse.ucdenver.csci5593.parser.X86InstructionSet;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class App 
-{
-    public static void main( String[] args )
-    {
+public class App {
+    public static void main(String[] args) {
 
         X86InstructionSet.loadInstructions();
 
