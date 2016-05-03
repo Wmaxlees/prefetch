@@ -8,7 +8,10 @@ import cse.ucdenver.csci5593.memory.MemoryManager;
 import cse.ucdenver.csci5593.memory.RegisterMemoryModule;
 import cse.ucdenver.csci5593.parser.X86InstructionSet;
 
-public class InstSub  extends Instruction {
+/**
+ * Created by jaspreet on 4/15/16.
+ */
+public class InstSub extends Instruction {
     public int CPI(MemoryManager memoryManager) throws BadlyFormattedInstructionException {
         return 6;
     }
@@ -24,7 +27,7 @@ public class InstSub  extends Instruction {
 
         long result = this.getOperand(1).getValue(memoryManager) - this.getOperand(0).getValue(memoryManager);
 
-        memoryManager.setMemoryValue(this.getOperand(1).getAddress(memoryManager), (int)result);
+        memoryManager.setMemoryValue(this.getOperand(1).getAddress(memoryManager), (int) result);
 
         this.setFlags(memoryManager, result);
 

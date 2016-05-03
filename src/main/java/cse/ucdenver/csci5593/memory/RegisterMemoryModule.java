@@ -62,4 +62,12 @@ public interface RegisterMemoryModule extends MemoryModule {
      * @return The maximum register index
      */
     int getMaxRegisterIndex();
+
+    /**
+     * Create a new register object with the same values
+     * as the current registers
+     *
+     * @return New registers object
+     */
+    RegisterMemoryModule clone();
 }

@@ -37,4 +37,19 @@ public interface MemoryModule {
      * @return The access time of the module
      */
     int accessTime();
+
+    /**
+     * Create a new instance with the same specs as the
+     * current memory module
+     *
+     * @return A MemoryModule with the same specs
+     */
+    MemoryModule duplicate();
+
+    /**
+     * Get the name of the memory module
+     *
+     * @return The string name of the module
+     */
+    String getName();
 }

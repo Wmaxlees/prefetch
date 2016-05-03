@@ -135,7 +135,10 @@ public class X86InstructionSet implements InstructionSet {
         Pattern pattern2 = Pattern.compile("%[a-zA-Z]+:[0-9]+");
         Matcher matcher2 = pattern2.matcher(token);
 
-        if (matcher.matches() || matcher2.matches()) {
+        Pattern pattern3 = Pattern.compile("\\d*\\(\\w*,%?\\w*,\\w*\\)");
+        Matcher matcher3 = pattern3.matcher(token);
+
+        if (matcher.matches() || matcher2.matches() || matcher3.matches()) {
             return true;
         } else {
             return false;
@@ -181,7 +184,10 @@ public class X86InstructionSet implements InstructionSet {
      * @return True if the token is a label
      */
     private boolean isLabel(String token) {
-        return token.startsWith(".");
+        Pattern pattern = Pattern.compile("[_.]\\w+");
+        Matcher matcher = pattern.matcher(token);
+
+        return matcher.matches();
     }
 
     /**

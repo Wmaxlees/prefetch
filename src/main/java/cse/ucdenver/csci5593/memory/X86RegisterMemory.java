@@ -3,6 +3,7 @@ package cse.ucdenver.csci5593.memory;
 import cse.ucdenver.csci5593.memory.exceptions.AddressNotFoundException;
 
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Created by max on 4/15/16.
@@ -154,6 +155,9 @@ public class X86RegisterMemory implements RegisterMemoryModule {
 
     @Override
     public boolean hasValue(int memoryLocation) {
+        if (this.getMaxRegisterIndex() >= memoryLocation) {
+            return true;
+        }
         return false;
     }
 
@@ -170,5 +174,33 @@ public class X86RegisterMemory implements RegisterMemoryModule {
     @Override
     public int accessTime() {
         return 0;
+    }
+
+    @Override
+    public RegisterMemoryModule clone() {
+        RegisterMemoryModule newRegs = new X86RegisterMemory();
+
+        // Set the flags
+        Iterator it = this.flags.entrySet().iterator();
+        while (it.hasNext()) {
+            HashMap.Entry entry = (HashMap.Entry<Flag, Boolean>)it.next();
+            if ((Boolean)entry.getValue()) {
+                newRegs.setFlag((Flag)entry.getKey());
+            } else {
+                newRegs.resetFlag((Flag)entry.getKey());
+            }
+        }
+
+        return newRegs;
+    }
+
+    @Override
+    public MemoryModule duplicate() {
+        return new X86RegisterMemory();
+    }
+
+    @Override
+    public String getName() {
+        return "Registers";
     }
 }
